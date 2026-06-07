@@ -1,0 +1,107 @@
+---
+title: Concepts
+description: The serial number, QC, the part, and the traveler — the four ideas behind every machine.
+---
+
+A Thinking Block is close to a pure function, but the body can think.
+
+```txt
+output = block.get(input)
+```
+
+Like a function it has a name, input, output, and is reusable. Unlike a normal
+function it may call a model, be probabilistic, need an inspector, rework a part,
+keep a durable artifact, and carry a full record of how it was made. Read it as a
+machine on a factory line: four ideas make it run.
+
+## The serial number (identity)
+
+Identity is the serial number stamped on every part. It defines what "the same
+part" means: the input **is** the serial, and it content-addresses the artifact.
+
+```ts
+identity: ({ food }) => food.trim().toLowerCase()
+```
+
+A good serial is stable and product-shaped — `food name`, or
+`provider + resource type`, or `provider + kind + type + schemaHash`, or a
+`photo hash`. A bad serial mixes in request ids, timestamps, UI state, or random
+caller details — those make every order look new, so the machine remakes a part
+it already had.
+
+The serial is the machine's whole cache and artifact boundary. Same serial, same
+finished part — handed back cold, no model call. Change the spec (the schema) and
+the serial changes, so the machine remakes the part against new reality instead
+of shipping a stale one. This is why the line never 404s: there is no shelf to
+miss, only a serial to make.
+
+## QC (validation)
+
+QC is part of the machine, not something every caller remembers to run. A part is
+inspected before it is ever stamped and kept. There are two kinds of gate:
+
+```ts
+check("macros-reconcile", ...)   // a caliper — code, no model
+judge("serving-is-realistic", ...) // an inspector — a model
+```
+
+`check` is a **caliper**: deterministic code that gauges the part. The stated
+calories reconcile with the macros; the candidate paths exist in the schema; the
+logo name is in the icon manifest. It catches a fat-fingered or hallucinated
+number a schema check never could.
+
+`judge` is an **inspector**: a model that rules on the things code can't measure
+— is this a realistic serving, are these field labels useful on a human form, are
+these relationship rules semantically plausible.
+
+A gate that fails hands back feedback, and that feedback is the rework order for
+the next attempt — the machine reworks the part instead of shipping a weak one.
+
+```txt
+work to spec -> inspector rejects -> rework with the feedback -> inspector accepts
+```
+
+## The part (artifacts)
+
+The machine's output is a part: the durable, versioned result of thinking — not
+just a cache entry. It moves down the line through a lifecycle:
+
+- `pending` — the part is on the line, being worked.
+- `ready` — it passed QC and shipped; this is the part `.get` hands back.
+- `rejected` — the machine ran correctly, but QC scrapped the part.
+- `failed` — a machine broke (provider, database, schema, or runtime error).
+- `superseded` — a newer part replaced this one on its serial.
+
+**Rejected is not failed.** Rejected means the machine did its job and judged the
+part not good enough to ship. Failed means a machine couldn't finish the work at
+all. That distinction matters for product quality, retries, and debugging.
+
+An **artifact adapter** decides how a shipped part becomes product state. On
+`get`, the runtime finds a ready part, then asks the adapter to read the current
+product output. If the product rows are missing or stale the adapter returns
+`null`, and the machine remakes the part — that is how the line stays honest
+instead of shipping from an empty shelf.
+
+## The traveler (trace)
+
+Every part carries a traveler — the full record of how it was made, attached to
+the machine instead of scattered across model calls:
+
+- the run, and which order produced it,
+- every model call (the work step and the inspector step, with model, provider, tokens),
+- every QC result, pass or scrap, with its feedback,
+- the current lifecycle phase and which part superseded it.
+
+`block.audit(identity)` pulls every part ever made on a serial — shipped,
+scrapped, or broken — so you can answer "what order produced this," "which model
+calls happened," "did an inspector scrap anything," and "which version of the
+thinking is the current product state" without adding a single log line.
+
+## Not an agent, not a workflow
+
+A tool-calling agent is a way to *execute* reasoning — it's the operator working
+the material. A Thinking Block is a way to *productize* reasoning: it wraps that
+operator in a typed spec, a stable serial, a lifecycle, and rework. A workflow
+coordinates steps (`do A, then B, then C`); a machine maintains a part (`given
+this order, make and keep this part`). A workflow may put an order through a
+machine; they solve different problems.

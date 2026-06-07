@@ -1,0 +1,51 @@
+---
+title: CLI
+description: tb — migrate the store schema and run the dashboard locally.
+---
+
+`tb` is the Thinking Blocks command line tool. It manages the store schema and
+runs the local dashboard.
+
+## Install
+
+```sh
+npm install -D @thinking-blocks/cli
+```
+
+The binary is `tb`. Run it with your package manager (for example
+`npx tb <command>` or `pnpm tb <command>`).
+
+## `tb migrate`
+
+Applies the [store-postgres](/docs/store-postgres) migrations to your database,
+creating the artifact, run, model-call, and validation-result tables.
+
+```sh
+tb migrate
+```
+
+It reads the connection from your `DATABASE_URL`. Run it once before the first
+block call, and again after upgrading the store package when new migrations
+ship.
+
+## `tb dev`
+
+Starts the [floor monitor](/docs/dashboard) against your configured database, so
+you can walk every machine and the parts it has made.
+
+```sh
+tb dev
+```
+
+The floor monitor runs with no authentication and is meant for local inspection
+— point it at a database you control.
+
+## Configuration
+
+Both commands read `DATABASE_URL` from the environment:
+
+```sh
+export DATABASE_URL="postgres://user:pass@localhost:5432/thinking_blocks"
+tb migrate
+tb dev
+```

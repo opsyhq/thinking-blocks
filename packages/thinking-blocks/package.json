@@ -1,0 +1,52 @@
+{
+	"name": "thinking-blocks",
+	"version": "0.1.0",
+	"description": "Productize AI capabilities: function + AI agent + validation + memory + artifact + trace. Cached, versioned, validated, observable.",
+	"license": "Apache-2.0",
+	"type": "module",
+	"sideEffects": false,
+	"keywords": [
+		"ai",
+		"llm",
+		"agent",
+		"cache",
+		"artifact",
+		"vercel-ai-sdk"
+	],
+	"homepage": "https://thinkingblocks.dev",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/opsyhq/thinking-blocks.git",
+		"directory": "packages/thinking-blocks"
+	},
+	"exports": {
+		".": {
+			"types": "./dist/index.d.mts",
+			"import": "./dist/index.mjs"
+		}
+	},
+	"main": "./dist/index.mjs",
+	"types": "./dist/index.d.mts",
+	"files": [
+		"dist"
+	],
+	"scripts": {
+		"build": "tsdown",
+		"typecheck": "tsc --noEmit"
+	},
+	"dependencies": {
+		"@thinking-blocks/core": "workspace:*",
+		"@thinking-blocks/store": "workspace:*"
+	},
+	"peerDependencies": {
+		"ai": "^6.0.168",
+		"zod": "^4.0.0"
+	},
+	"devDependencies": {
+		"ai": "^6.0.197",
+		"zod": "^4.4.3"
+	},
+	"publishConfig": {
+		"access": "public"
+	}
+}

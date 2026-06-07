@@ -1,0 +1,24 @@
+{
+	"name": "nutrition",
+	"version": "0.0.0",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"get": "tsx --env-file-if-exists=.env src/get.ts",
+		"dev": "tb dev",
+		"verify": "tsx --env-file-if-exists=.env test/verify.ts",
+		"typecheck": "tsc --noEmit"
+	},
+	"dependencies": {
+		"@ai-sdk/openai": "^3.0.68",
+		"@thinking-blocks/store-local": "workspace:*",
+		"ai": "^6.0.197",
+		"thinking-blocks": "workspace:*",
+		"zod": "^4.4.3"
+	},
+	"devDependencies": {
+		"@thinking-blocks/cli": "workspace:*",
+		"@types/node": "^25.9.2",
+		"tsx": "^4.22.4"
+	}
+}

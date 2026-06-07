@@ -1,0 +1,40 @@
+{
+	"name": "@thinking-blocks/core",
+	"version": "0.1.0",
+	"description": "The Thinking Blocks engine: ThinkingBlock, check, judge, the runner, and the in-memory store.",
+	"license": "Apache-2.0",
+	"type": "module",
+	"sideEffects": false,
+	"exports": {
+		".": {
+			"types": "./dist/index.d.mts",
+			"import": "./dist/index.mjs"
+		}
+	},
+	"main": "./dist/index.mjs",
+	"types": "./dist/index.d.mts",
+	"files": [
+		"dist"
+	],
+	"scripts": {
+		"build": "tsdown",
+		"typecheck": "tsc --noEmit",
+		"test": "vitest run"
+	},
+	"dependencies": {
+		"@thinking-blocks/store": "workspace:*"
+	},
+	"peerDependencies": {
+		"ai": "^6.0.168",
+		"zod": "^4.0.0"
+	},
+	"devDependencies": {
+		"@types/node": "^25.9.2",
+		"ai": "^6.0.197",
+		"vitest": "^4.1.8",
+		"zod": "^4.4.3"
+	},
+	"publishConfig": {
+		"access": "public"
+	}
+}

@@ -1,0 +1,97 @@
+---
+title: What is a Thinking Block
+description: A warehouse serves what you put in. A factory makes what you ask for. A Thinking Block is the factory.
+---
+
+**A warehouse serves what you put in. A factory makes what you ask for.**
+
+Today's software is a warehouse. It shelves the data you loaded, and the moment
+you ask for something nobody stocked, it 404s. A Thinking Block is a factory. You
+call `.get(input)` and you *always* get a finished product — because if the part
+was never made, the machine makes it now, on demand, to spec.
+
+Under the hood a Thinking Block is `function + AI agent + validation + memory +
+artifact + trace`. But the feeling is a machine on a factory line: raw material
+goes in, a finished part comes out, and every part is the same one you'd get if
+you ordered it again.
+
+## The line, end to end
+
+One order through the machine:
+
+```txt
+order (input)
+  -> serial number (identity)            "have we made this part before?"
+  -> ship it cold if we have             (cached — no model call)
+  -> otherwise work it to spec           (the AI agent + your schema)
+  -> run it through QC                   (your validators)
+  -> rework on a fail, with the feedback (retry, up to attempts.max)
+  -> stamp the serial and keep the part  (a durable, versioned artifact)
+  -> ship it                             (and record the whole traveler)
+```
+
+`.get(input)` is the order window. It never misses: it either hands you the part
+off the line or makes it while you wait. Nothing in product code has to know
+which happened.
+
+```ts
+// A warehouse miss: a disposable prompt — blob out, recomputed every render,
+// no spec, no QC, no record of what produced it.
+const text = await generateObject({
+  model,
+  prompt: `nutrition facts for ${food}?`,
+})
+
+// A factory order: call the machine, always get a finished part.
+const facts = await nutrition.get({ food: "dragon fruit" })
+// facts.output is { serving, calories, protein, carbs, fat }, validated and kept;
+// the same food -> the same part, instantly, forever.
+```
+
+## The serial number is the input
+
+The input is not just an argument — it **is** the serial number. `{ food }`
+content-addresses the part: same serial, same part. Change the spec (the output
+schema) and the serial changes, so the machine remakes the part against new
+reality instead of shipping a stale one. No static maps, no hand-rolled cache
+keys, no "did this drift" guesswork.
+
+That is the difference from a warehouse. A warehouse has a shelf for every item
+someone remembered to stock; miss the shelf and you get nothing. The factory has
+no shelves to miss — the catalog is every part the machine can make, which is
+every input there is.
+
+## Machines in the wild
+
+Thinking Blocks were first built inside [Opsy](https://opsy.dev), where a line of
+them turns messy, schema-shaped Terraform data into finished product parts — each
+ordered with `.get({...})`, each made once and kept on its serial:
+
+- `resourceRelationships.get({ resource, type, version })` — which fields of a
+  resource type point at other resources, and how: a validated directional
+  relationship graph.
+- `resourceTypeMetadata.get({ provider, kind, type, schemaHash })` — a human
+  product name and diagram footprint for an unknown type.
+- `resourceFieldLayout.get({ provider, kind, type, schemaHash, fields })` —
+  every schema field arranged into a real, sectioned form.
+- `resourceFieldMetadata.get({ ... })` — per-field labels, actionable help, and
+  icons.
+- `resourceTypeIcon.get({ provider, type })` — a real icon asset, verified to
+  exist before it is stamped and kept.
+
+Outside Opsy, the same line runs anywhere the raw material is messy and the
+finished part should be reused: nutrition facts from a bare food name, travel
+rules from fare documents, product-catalog enrichment, contract-clause
+extraction.
+
+The point is not "call an LLM." The point is to manufacture AI-generated product
+knowledge — to spec, inspected, reusable, and reworkable — instead of improvising
+a blob and throwing it away.
+
+## Where to go next
+
+- [Quickstart](/docs/quickstart) — install and build your first machine.
+- [Concepts](/docs/concepts) — the serial number, QC, the part, and the traveler.
+- [store-postgres](/docs/store-postgres) — keep the parts on Postgres, with audit queries.
+- [Dashboard](/docs/dashboard) — walk the factory floor in the browser.
+- [CLI](/docs/cli) — `tb migrate` and `tb dev`.

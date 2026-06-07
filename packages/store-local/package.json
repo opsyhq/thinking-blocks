@@ -1,0 +1,35 @@
+{
+	"name": "@thinking-blocks/store-local",
+	"version": "0.1.0",
+	"description": "Local file-backed implementation of the Thinking Blocks store + reader — zero-setup persistence for local dev and the dashboard.",
+	"license": "Apache-2.0",
+	"type": "module",
+	"sideEffects": false,
+	"exports": {
+		".": {
+			"types": "./dist/index.d.mts",
+			"import": "./dist/index.mjs"
+		}
+	},
+	"main": "./dist/index.mjs",
+	"types": "./dist/index.d.mts",
+	"files": [
+		"dist"
+	],
+	"scripts": {
+		"build": "tsdown",
+		"typecheck": "tsc --noEmit",
+		"test": "vitest run"
+	},
+	"dependencies": {
+		"@thinking-blocks/store": "workspace:*",
+		"@thinking-blocks/core": "workspace:*"
+	},
+	"devDependencies": {
+		"@types/node": "^25.9.2",
+		"vitest": "^4.1.8"
+	},
+	"publishConfig": {
+		"access": "public"
+	}
+}

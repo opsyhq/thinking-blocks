@@ -1,0 +1,76 @@
+---
+title: store-postgres
+description: Durable artifacts, runs, model calls, and validation results on Postgres via Drizzle.
+---
+
+`@thinking-blocks/store-postgres` is where the parts are kept. It implements the
+storage seam every machine ships through, persisting artifacts, runs, model
+calls, and validation results so the parts and their travelers survive a
+restart.
+
+## Install
+
+```sh
+npm install @thinking-blocks/store-postgres
+```
+
+## Wire it up
+
+`DrizzleThinkingBlockStore` takes a Drizzle database handle and is passed to any
+block as its `store`.
+
+```ts
+import { drizzle } from "drizzle-orm/node-postgres"
+import { DrizzleThinkingBlockStore } from "@thinking-blocks/store-postgres"
+import { ThinkingBlock } from "thinking-blocks"
+
+const db = drizzle(process.env.DATABASE_URL!)
+const store = new DrizzleThinkingBlockStore(db)
+
+const block = new ThinkingBlock({
+  name: "summarize",
+  store,
+  // agent, identity, prepareCall, validators...
+})
+```
+
+## Migrate
+
+The store ships its schema as migrations. Apply them with the
+[CLI](/docs/cli) before the first run:
+
+```sh
+tb migrate
+```
+
+This creates the artifact, run, model-call, and validation-result tables the
+store reads and writes.
+
+## Audit queries
+
+Every machine exposes its history through `audit`, backed by the store — every
+part's traveler, read straight from the tables:
+
+```ts
+const history = await block.audit(identity)
+// every part ever made on this serial — shipped, scrapped, or broken —
+// with the run, model calls, and QC results behind each one
+```
+
+From the same tables you can answer product-quality questions directly:
+
+- How many times did this machine run for a given serial?
+- Which orders are producing scrap?
+- Which model made the currently shipping part?
+- How many model calls did one part need?
+- Which QC gates failed, and with what feedback?
+
+Because the records travel with the part that produced them, you get these
+answers without adding one-off logging to every feature.
+
+## Invalidate and remake
+
+`block.dump(identity)` supersedes the shipping part so the next `get` remakes it.
+When the *logic* changes, bump the block version (`v1` -> `v2`) and every serial
+remakes against the new reality — invalidation as a one-line change, not a
+migration.

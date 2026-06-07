@@ -1,0 +1,38 @@
+---
+title: Dashboard
+description: Walk the factory floor — every machine, every part, and the traveler behind each one.
+---
+
+The dashboard is the floor monitor. It reads the same store the machines keep
+their parts in, so you can walk every machine, every part, every run, model call,
+and QC result without writing a single query.
+
+It runs with no authentication. It is a local development and inspection tool,
+not a multi-tenant product surface — point it at a database you control and keep
+it off the public internet.
+
+## Run it
+
+The dashboard ships with the [CLI](/docs/cli):
+
+```sh
+tb dev
+```
+
+This starts the web app against your configured `DATABASE_URL` and opens it in
+the browser.
+
+## What you can see
+
+- **Machines** — every named block, with run counts and the current state of the
+  parts on the line.
+- **Serials** — for any machine, the parts made per identity, and which one is
+  currently shipping.
+- **Parts** — the lifecycle phase (`pending`, `ready`, `rejected`, `failed`,
+  `superseded`) and the validated output.
+- **Runs** — each attempt on the line, the model calls it made (model, provider,
+  tokens), and the QC results, pass or scrap, with feedback.
+
+The floor monitor is a read view over the traveler. It is the visual counterpart
+to `block.audit(identity)` — useful for answering "what order produced this part"
+and "did an inspector scrap anything" while you build.

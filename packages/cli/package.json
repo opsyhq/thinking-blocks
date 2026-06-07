@@ -1,0 +1,38 @@
+{
+	"name": "@thinking-blocks/cli",
+	"version": "0.1.0",
+	"description": "The Thinking Blocks CLI — migrate the store and run the dashboard (tb migrate / tb dev).",
+	"license": "Apache-2.0",
+	"type": "module",
+	"sideEffects": false,
+	"exports": {
+		".": {
+			"types": "./dist/index.d.mts",
+			"import": "./dist/index.mjs"
+		}
+	},
+	"main": "./dist/index.mjs",
+	"types": "./dist/index.d.mts",
+	"bin": {
+		"thinking-blocks": "./dist/index.mjs",
+		"tb": "./dist/index.mjs"
+	},
+	"files": [
+		"dist"
+	],
+	"scripts": {
+		"build": "tsdown",
+		"typecheck": "tsc --noEmit"
+	},
+	"dependencies": {
+		"@thinking-blocks/store-local": "workspace:*",
+		"@thinking-blocks/store-postgres": "workspace:*",
+		"@thinking-blocks/web": "workspace:*"
+	},
+	"devDependencies": {
+		"@types/node": "^25.9.2"
+	},
+	"publishConfig": {
+		"access": "public"
+	}
+}

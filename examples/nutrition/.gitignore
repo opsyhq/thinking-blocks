@@ -1,0 +1,2 @@
+# The local world — seeded artifacts persisted by `pnpm seed`, read by `tb dev`.
+.thinking-blocks/

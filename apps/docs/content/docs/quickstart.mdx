@@ -1,0 +1,103 @@
+---
+title: Quickstart
+description: Install thinking-blocks and put your first machine on the line.
+---
+
+## Install
+
+```sh
+npm install thinking-blocks ai zod
+```
+
+`ai` ([Vercel AI SDK](https://sdk.vercel.ai)) and `zod` are peer dependencies.
+
+## Build a machine
+
+A machine bundles a name, a store (where finished parts are kept), an agent (the
+operator), an output schema (the spec), an identity function (the serial), and a
+`prepareCall` hook that turns an order into the model call.
+
+```ts
+import { Output, ToolLoopAgent } from "ai"
+import { z } from "zod"
+import { InMemoryThinkingBlockStore, ThinkingBlock } from "thinking-blocks"
+
+const NutritionFacts = z.object({
+  serving: z.string(),
+  calories: z.number(),
+  protein: z.number(),
+  carbs: z.number(),
+  fat: z.number(),
+})
+
+const nutrition = new ThinkingBlock<{ food: string }, z.infer<typeof NutritionFacts>>({
+  name: "nutrition",
+  store: new InMemoryThinkingBlockStore(),
+  agent: new ToolLoopAgent({
+    model: "openai/gpt-5",
+    output: Output.object({ schema: NutritionFacts }),
+  }),
+  // The serial number. Same food -> same part, forever.
+  identity: ({ food }) => food.trim().toLowerCase(),
+  prepareCall: ({ input }) => ({
+    prompt: `Give the nutrition facts for one typical serving of "${input.food}".`,
+  }),
+})
+```
+
+## Order from it like a function
+
+```ts
+const first = await nutrition.get({ food: "dragon fruit" })  // made on the line
+const second = await nutrition.get({ food: "dragon fruit" }) // source: "cached"
+```
+
+The first `get` runs the operator, inspects the part, and keeps it. The second
+order with the same serial ships the same part cold, with no model call.
+
+`get` is the order window — it hands you the current part, making it if the
+machine never has. `generate` forces a fresh run:
+
+```ts
+const fresh = await nutrition.generate({ food: "dragon fruit" }) // a new part
+```
+
+## Add QC
+
+QC gates run before any part is kept. `check` is a caliper (deterministic code);
+`judge` is an inspector (a model). A scrapped part's feedback becomes the rework
+order for the next attempt.
+
+```ts
+import { check } from "thinking-blocks"
+
+const nutrition = new ThinkingBlock({
+  // ...
+  validators: [
+    // A caliper: the stated calories must reconcile with the macros
+    // (4·protein + 4·carbs + 9·fat) — catches a hallucinated number a schema can't.
+    check("macros-reconcile", {
+      validate: ({ output }) => {
+        const implied = 4 * output.protein + 4 * output.carbs + 9 * output.fat
+        return Math.abs(implied - output.calories) <= Math.max(40, 0.25 * output.calories)
+          ? { success: true }
+          : { success: false, feedback: { reason: "calories_dont_reconcile" } }
+      },
+    }),
+  ],
+  attempts: { max: 3 },
+})
+```
+
+A runnable version of this block — plus an `emoji` block, a durable file-backed
+store, and the dashboard — lives in
+[`examples/nutrition`](https://github.com/opsyhq/thinking-blocks/tree/main/examples/nutrition).
+For the smallest possible single-file run, see
+[`examples/quickstart`](https://github.com/opsyhq/thinking-blocks/tree/main/examples/quickstart).
+
+## Keep the parts
+
+The in-memory store loses every part when the process exits. Swap it for a
+durable backend when you want parts and their travelers to survive a restart and
+show up on the floor monitor. See [store-postgres](/docs/store-postgres) and the
+[dashboard](/docs/dashboard).
