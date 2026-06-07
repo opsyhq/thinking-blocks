@@ -1,0 +1,14 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "thinking-blocks",
+	"compatibility_date": "2026-06-01",
+	// Static-assets-only Worker: no server code, just the Next.js `output: "export"`
+	// directory served from Cloudflare's edge. `pnpm build` regenerates ./out.
+	"assets": {
+		"directory": "./out",
+		// `/docs` -> docs.html, `/docs/quickstart` -> docs/quickstart.html, etc.
+		"html_handling": "auto-trailing-slash",
+		// On a miss, serve the prerendered Next.js 404 page.
+		"not_found_handling": "404-page"
+	}
+}

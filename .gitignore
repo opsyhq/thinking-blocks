@@ -2,8 +2,10 @@ node_modules
 dist
 .turbo
 .next
+out
 .source
 .workflows
+.wrangler
 *.tsbuildinfo
 .DS_Store
 .env
