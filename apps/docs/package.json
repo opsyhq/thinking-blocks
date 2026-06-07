@@ -8,6 +8,7 @@
 		"dev": "next dev",
 		"build": "next build",
 		"start": "next start",
+		"deploy": "next build && wrangler deploy",
 		"postinstall": "fumadocs-mdx"
 	},
 	"dependencies": {
@@ -23,6 +24,7 @@
 		"@types/node": "^25.9.2",
 		"@types/react": "^19.2.14",
 		"@types/react-dom": "^19.2.3",
-		"typescript": "^6.0.3"
+		"typescript": "^6.0.3",
+		"wrangler": "^4"
 	}
 }
