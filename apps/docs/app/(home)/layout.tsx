@@ -1,7 +1,7 @@
-import { HomeLayout } from "fumadocs-ui/layouts/home"
 import type { ReactNode } from "react"
-import { baseOptions } from "@/lib/layout.shared"
 
+// The landing owns its full canvas (dark, custom nav) — no Fumadocs HomeLayout
+// chrome here. Docs routes keep their own themed layout.
 export default function Layout({ children }: { children: ReactNode }) {
-	return <HomeLayout {...baseOptions()}>{children}</HomeLayout>
+	return children
 }
