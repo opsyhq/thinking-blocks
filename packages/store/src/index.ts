@@ -1,4 +1,4 @@
-// @thinking-blocks/store — the storage interface every backend implements.
+// @thinking-blocks/store: the storage interface every backend implements.
 // Persistence types only: no `ai`, no `zod`, no runtime dependencies.
 
 export type ThinkingBlockArtifactStatus =

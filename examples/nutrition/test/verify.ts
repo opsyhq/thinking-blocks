@@ -15,7 +15,7 @@ import { FOODS } from "../src/foods"
 
 // Run the whole factory WITHOUT an API key: a deterministic mock model works
 // every machine, an InMemoryThinkingBlockStore holds the parts, and the
-// InMemoryThinkingBlockReader reads them back — the same reader the floor monitor
+// InMemoryThinkingBlockReader reads them back, the same reader the floor monitor
 // (the dashboard) talks to. This is a test harness; the example itself (the `get`
 // script) uses a real model.
 
@@ -87,7 +87,7 @@ async function main() {
 	await nutrition.stop()
 	await emoji.stop()
 
-	// Read the floor back through the in-memory reader — the same interface the
+	// Read the floor back through the in-memory reader, the same interface the
 	// dashboard's read server calls.
 	const reader = new InMemoryThinkingBlockReader(store)
 	const blocks = await reader.listBlocks(listBlocksQuerySchema.parse({}))
@@ -123,7 +123,7 @@ async function main() {
 	)
 
 	console.log(
-		`VERIFY OK — ${FOODS.length} foods through 2 machines, generated then ` +
+		`VERIFY OK: ${FOODS.length} foods through 2 machines, generated then ` +
 			`shipped cold; parts, runs, ${detail.modelCalls.length} model calls and ` +
 			`${detail.validations.length} QC gates recorded and read back.`,
 	)

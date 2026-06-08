@@ -3,12 +3,12 @@ import type { ThinkingBlockStore } from "thinking-blocks"
 import { check, judge, ThinkingBlock } from "thinking-blocks"
 import { z } from "zod"
 
-// Two machines on the floor, both fed the same raw material — a food name.
+// Two machines on the floor, both fed the same raw material: a food name.
 //
 // This is the factory, not the warehouse. A warehouse has a row for every food
 // someone remembered to stock; ask for "dragon fruit" and if nobody loaded it
 // you get a 404. These machines have no shelves to miss. Call `.get({ food })`
-// and you always get a finished part — because if it was never made, the machine
+// and you always get a finished part, because if it was never made, the machine
 // makes it now: worked to spec (the schema), passed through QC (the validators),
 // reworked on a fail, then stamped with its serial (the identity) and kept. The
 // next order for the same food ships cold, with no model call. The catalog is
@@ -66,7 +66,7 @@ export function createNutritionBlock(opts: {
 		}),
 		attempts: { max: 3 },
 		validators: [
-			// The caliper — a code gauge, no model. The stated calories must
+			// The caliper (a code gauge, no model). The stated calories must
 			// reconcile with the macros (4·protein + 4·carbs + 9·fat). Catches a
 			// hallucinated or fat-fingered number that a schema check never could.
 			check<FoodInput, NutritionFacts>("macros-reconcile", {
@@ -80,11 +80,11 @@ export function createNutritionBlock(opts: {
 						? { success: true }
 						: {
 								success: false,
-								feedback: `stated calories (${output.calories}) don't reconcile with the macros — 4·protein + 4·carbs + 9·fat = ${Math.round(implied)} kcal, off by more than ${Math.round(allowed)} kcal. Fix the numbers so they agree.`,
+								feedback: `stated calories (${output.calories}) don't reconcile with the macros: 4·protein + 4·carbs + 9·fat = ${Math.round(implied)} kcal, off by more than ${Math.round(allowed)} kcal. Fix the numbers so they agree.`,
 							}
 				},
 			}),
-			// The inspector — a model judge. Gates whether the serving and values
+			// The inspector (a model judge). Gates whether the serving and values
 			// are realistic for this food. On a fail the machine reworks the part
 			// with this feedback instead of shipping a weak one.
 			judge<FoodInput, NutritionFacts, z.infer<typeof Judgement>>(
@@ -109,7 +109,7 @@ export function createNutritionBlock(opts: {
 }
 
 // ── Machine 2: emoji ──────────────────────────────────────────────────────────
-// The same raw material, a different product — the single best emoji for a food.
+// The same raw material, a different product: the single best emoji for a food.
 // The legible echo of Opsy's real icon machine: a catalog where every type has
 // an icon waiting the moment you ask.
 
@@ -132,7 +132,7 @@ function isSingleEmoji(value: string): boolean {
 
 /**
  * Build the emoji machine. A single code caliper: the part must be exactly one
- * emoji — no label, no trailing text.
+ * emoji: no label, no trailing text.
  */
 export function createEmojiBlock(opts: {
 	store: ThinkingBlockStore
@@ -157,7 +157,7 @@ export function createEmojiBlock(opts: {
 						? { success: true }
 						: {
 								success: false,
-								feedback: `"${output.emoji}" is not exactly one emoji — return a single emoji glyph with no extra text.`,
+								feedback: `"${output.emoji}" is not exactly one emoji. Return a single emoji glyph with no extra text.`,
 							},
 			}),
 		],

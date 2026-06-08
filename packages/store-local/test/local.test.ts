@@ -9,8 +9,9 @@ import { afterEach, beforeEach, describe, expect, test } from "vitest"
 import { LocalThinkingBlockReader, LocalThinkingBlockStore } from "../src"
 
 // Write through LocalThinkingBlockStore, then read back through a SEPARATE
-// LocalThinkingBlockReader instance pointed at the same file — the cross-process
-// path the dashboard relies on. The reader never shares memory with the store;
+// LocalThinkingBlockReader instance pointed at the same file. This is the
+// cross-process path the dashboard relies on. The reader never shares memory
+// with the store;
 // it only sees what was persisted, so this also proves the Date round-trip.
 
 let dir: string

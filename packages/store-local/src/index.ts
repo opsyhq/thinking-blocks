@@ -4,7 +4,7 @@
 // This is the "local world": a zero-setup persistent backend that lives in a
 // JSON file on disk. Because the data outlives the process, the writer (a seed
 // script, an app) and the reader (the dashboard via `tb dev`) can be SEPARATE
-// processes that simply point at the same file — exactly the way they'd both
+// processes that simply point at the same file, exactly the way they'd both
 // connect to one Postgres. No database, no docker, and no in-process coupling.
 //
 // The store extends the in-memory store and snapshots itself to disk after every
@@ -182,7 +182,7 @@ export class LocalThinkingBlockReader implements ThinkingBlockReader {
 	constructor(private readonly path: string = DEFAULT_LOCAL_STORE_PATH) {}
 
 	// Read the snapshot fresh each call so the dashboard reflects whatever the
-	// writer has flushed — the file is small and this keeps the reader stateless.
+	// writer has flushed. The file is small and this keeps the reader stateless.
 	private reader(): InMemoryThinkingBlockReader {
 		return new InMemoryThinkingBlockReader(hydrate(this.path))
 	}

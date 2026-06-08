@@ -4,7 +4,7 @@
 
 Today's software is a warehouse: it shelves the data you loaded and 404s the
 moment you ask for something nobody stocked. A Thinking Block is a factory. You
-call `.get(input)` and you *always* get a finished part — because if it was never
+call `.get(input)` and you *always* get a finished part, because if it was never
 made, the machine makes it now: worked to spec (your schema), passed through QC
 (your validators), reworked until it's in-spec, stamped with a serial (its
 identity), and kept. The next order for the same part ships cold, no model call.
@@ -18,7 +18,7 @@ line**:
 const facts = await nutrition.get({ food: "dragon fruit" })
 ```
 
-The input **is** the serial number — `{ food }` content-addresses the part. Same
+The input **is** the serial number: `{ food }` content-addresses the part. Same
 serial, same validated part, forever; change the spec (the schema) and it remakes
 against new reality.
 
@@ -53,7 +53,7 @@ const second = await block.get({ text: "..." }) // source: "cached"
 The store is pluggable. `InMemoryThinkingBlockStore` keeps parts for the life of
 the process; for durability swap in
 [`@thinking-blocks/store-local`](https://www.npmjs.com/package/@thinking-blocks/store-local)
-— a JSON file on disk, zero setup — or
+(a JSON file on disk, zero setup) or
 [`@thinking-blocks/store-postgres`](https://www.npmjs.com/package/@thinking-blocks/store-postgres)
 for Drizzle/Postgres. The block code is identical; only the `store` you pass in
 changes.
@@ -64,17 +64,17 @@ A runnable example lives in
 ## Examples in the wild
 
 Thinking Blocks were first built inside [Opsy](https://opsy.dev), where five of them
-turn messy, schema-shaped Terraform data into product capabilities — each called as
+turn messy, schema-shaped Terraform data into product capabilities, each called as
 `.get({...})` and cached on identity:
 
-- `resourceRelationships.get({ resource, type, version })` — which fields of a resource
-  type point at other resources, and how: a validated directional relationship graph.
-- `resourceTypeMetadata.get({ provider, kind, type, schemaHash })` — a human product
+- `resourceRelationships.get({ resource, type, version })`: which fields of a resource
+  type point at other resources, and how, a validated directional relationship graph.
+- `resourceTypeMetadata.get({ provider, kind, type, schemaHash })`: a human product
   name and diagram footprint for an unknown type.
-- `resourceFieldLayout.get({ provider, kind, type, schemaHash, fields })` — every schema
+- `resourceFieldLayout.get({ provider, kind, type, schemaHash, fields })`: every schema
   field arranged into a real, sectioned form.
-- `resourceFieldMetadata.get({ ... })` — per-field labels, actionable help, and icons.
-- `resourceTypeIcon.get({ provider, type })` — a real icon asset, verified to exist
+- `resourceFieldMetadata.get({ ... })`: per-field labels, actionable help, and icons.
+- `resourceTypeIcon.get({ provider, type })`: a real icon asset, verified to exist
   before it is stored.
 
 See [`docs/positioning.md`](https://github.com/opsyhq/thinking-blocks/blob/main/docs/positioning.md)
@@ -138,7 +138,7 @@ You place an order:
 
 The machine does not improvise a one-off from scratch. It runs a known line:
 
-- Read the serial on the order — what exact part is being asked for.
+- Read the serial on the order: what exact part is being asked for.
 - Ship the part it already made on that serial, when it still applies.
 - If there's no part yet, work the raw material to spec.
 - Gauge the part with a caliper (deterministic code).
@@ -156,7 +156,7 @@ artifact phase.
 
 This is the difference from a warehouse, which is what software is today: a
 warehouse can only hand you a part someone already stocked, and 404s on anything
-else. The factory has no shelf to miss — order any serial and, if it's new, the
+else. The factory has no shelf to miss. Order any serial and, if it's new, the
 machine makes it now.
 
 ## Why This Exists

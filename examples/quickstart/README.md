@@ -5,8 +5,8 @@ one machine (`productBrief`) on the floor and sends the same order through twice
 
 1. The first order works the raw idea to spec with an AI agent, runs it past an
    inspector (a model judge), and keeps the finished part.
-2. The second order with the same `idea` ships the same validated brief cold —
-   `source: "cached"` — with no model call.
+2. The second order with the same `idea` ships the same validated brief cold
+   (`source: "cached"`) with no model call.
 
 ## Run
 

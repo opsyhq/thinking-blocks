@@ -11,10 +11,10 @@ import { createEmojiBlock, createNutritionBlock, type FoodInput } from "./block"
 //
 // Run it once for a food: the model runs, the output is validated, and the
 // artifact is kept in a JSON file on disk. Run the SAME command again and the
-// same part comes straight back from that file — instantly, with no model call.
+// same part comes straight back from that file, instantly, with no model call.
 // It's a fresh process every time, so the cache surviving proves it's durable on
-// disk, not held in memory. That round trip — generated once, cached forever
-// after — is the whole idea, and you do it with your own hands.
+// disk, not held in memory. That round trip (generated once, cached forever
+// after) is the whole idea, and you do it with your own hands.
 
 const food = process.argv.slice(2).join(" ").trim()
 if (!food) {
@@ -30,11 +30,11 @@ if (!process.env.OPENAI_API_KEY) {
 
 const model = openai(process.env.TB_MODEL ?? "gpt-4o-mini")
 
-// `get` returns a ready artifact, generating one if the block has never made it
-// — but a `failed` artifact is terminal, and `get` replays it forever. If a
+// `get` returns a ready artifact, generating one if the block has never made
+// it. But a `failed` artifact is terminal, and `get` replays it forever. If a
 // prior run died (a bad key, a network blip), force one fresh run with
-// `generate` so the command always recovers. A second failure is real failure —
-// let it surface.
+// `generate` so the command always recovers. A second failure is real failure,
+// so let it surface.
 async function getOrHeal<T>(
 	block: ThinkingBlock<FoodInput, T>,
 	order: FoodInput,
@@ -63,10 +63,10 @@ async function main() {
 	await emoji.stop()
 
 	if (!facts.ok) {
-		// A validator rejected the output — the block ran fine and decided the
+		// A validator rejected the output: the block ran fine and decided the
 		// result wasn't good enough. An honest outcome, not a crash.
 		console.log(
-			`\n  ⚠  ${food} — a validator rejected the output: ${facts.reason}\n`,
+			`\n  ⚠  ${food}: a validator rejected the output: ${facts.reason}\n`,
 		)
 		return
 	}
@@ -88,10 +88,10 @@ async function main() {
 			`     generated · ${(ms / 1000).toFixed(1)}s · validated, kept as an artifact on disk`,
 		)
 		console.log(
-			`     run the same command again — same food, same serial: it comes back cached, no model call.\n`,
+			`     run the same command again (same food, same serial) and it comes back cached, no model call.\n`,
 		)
 	} else {
-		console.log(`     cached · ${ms}ms · no model call — served from disk\n`)
+		console.log(`     cached · ${ms}ms · no model call, served from disk\n`)
 	}
 }
 

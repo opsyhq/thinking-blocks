@@ -327,7 +327,7 @@ export class InMemoryThinkingBlockStore implements ThinkingBlockStore {
 	): Promise<{ id: string }> {
 		const id = crypto.randomUUID()
 		// Stamp createdAt at record time, the way the Postgres column defaults to
-		// now() — the reader orders and renders model calls by it.
+		// now(). The reader orders and renders model calls by it.
 		this.modelCalls.push({ ...input, id, createdAt: new Date() })
 		return { id }
 	}

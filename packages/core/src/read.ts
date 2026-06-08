@@ -1,9 +1,9 @@
-// @thinking-blocks/core — the read contract.
+// @thinking-blocks/core: the read contract.
 //
 // The dashboard reads through a `ThinkingBlockReader`, the same way the engine
 // writes through a `ThinkingBlockStore`. This file is the backend-agnostic seam:
 // the query/cursor schemas, the identity-ref + cursor codecs, the result shapes,
-// and the reader interface. Both backends implement it — the Postgres audit
+// and the reader interface. Both backends implement it: the Postgres audit
 // queries (@thinking-blocks/store-postgres) and the in-memory reader below it
 // (./memory-reader). Pure: zod + node Buffer only, no `ai`, no Drizzle.
 

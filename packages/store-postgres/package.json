@@ -1,7 +1,7 @@
 {
 	"name": "@thinking-blocks/store-postgres",
 	"version": "0.1.0",
-	"description": "Postgres (Drizzle) implementation of the Thinking Blocks store — durable, versioned artifacts with audit queries.",
+	"description": "Postgres (Drizzle) implementation of the Thinking Blocks store: durable, versioned artifacts with audit queries.",
 	"license": "Apache-2.0",
 	"type": "module",
 	"sideEffects": false,

@@ -1,6 +1,6 @@
 ---
 title: store-local
-description: Durable artifacts on disk with zero setup — a JSON file the writer and the dashboard share.
+description: Durable artifacts on disk with zero setup, in a JSON file the writer and the dashboard share.
 ---
 
 `@thinking-blocks/store-local` keeps the parts in a JSON file on disk. It's the
@@ -38,14 +38,14 @@ const block = new ThinkingBlock({
 ```
 
 `DEFAULT_LOCAL_STORE_PATH` is `.thinking-blocks/store.json`, relative to the
-working directory — one constant so the writer and the `tb dev` reader never
+working directory. One constant so the writer and the `tb dev` reader never
 drift apart. Pass any path you like.
 
 ## Durable across processes
 
 The point of a file-backed store is that the cache outlives the process. Run a
 block once, kill the process, run it again, and the same part comes straight back
-from disk with no model call — proof it's durable, not held in memory.
+from disk with no model call. That's proof it's durable, not held in memory.
 
 ```ts
 // first process: generates, validates, snapshots to disk
@@ -58,12 +58,12 @@ const b = await block.get({ text: "..." }) // b.source === "cached"
 ## See it in the dashboard
 
 Point [`tb dev`](/docs/cli) at the same file and the dashboard hydrates from the
-snapshot — every block, part, model call, and QC result, no login, no database:
+snapshot: every block, part, model call, and QC result, no login, no database:
 
 ```sh
 tb dev
 ```
 
-When you outgrow a file — concurrent writers, real query load — swap in
+When you outgrow a file (concurrent writers, real query load), swap in
 [`store-postgres`](/docs/store-postgres). The block code is identical; only the
 `store` you construct changes.

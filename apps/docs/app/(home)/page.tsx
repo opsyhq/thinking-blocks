@@ -39,7 +39,7 @@ const FEATURES = [
 const WILD = [
 	{
 		call: "resourceRelationships.get({ resource, type })",
-		body: "which fields point at other resources — a validated directional graph.",
+		body: "which fields point at other resources: a validated directional graph.",
 	},
 	{
 		call: "resourceTypeMetadata.get({ provider, type })",
@@ -100,7 +100,7 @@ export default function HomePage() {
 					</h1>
 					<p className="v-sub">
 						Instead of shipping static software, you define dynamic
-						capabilities — closed loops that generate a validated answer on
+						capabilities: closed loops that generate a validated answer on
 						demand, then serve the same one forever.
 					</p>
 					<div className="v-hero-actions">
@@ -120,14 +120,14 @@ export default function HomePage() {
 							not a prompt.
 						</h2>
 						<p className="v-lead" data-rise style={rd(80)}>
-							You never load a row and hope it's there. Call the block — if the
+							You never load a row and hope it's there. Call the block. If the
 							part was never made, the line makes it now, validates it, and
 							keeps it on its serial.
 						</p>
 					</div>
 					<CodePanel
 						title="quickstart.ts"
-						foot="second .get() ships the same part — no model call"
+						foot="second .get() ships the same part: no model call"
 						delay={160}
 					>
 						<code>
@@ -195,7 +195,7 @@ export default function HomePage() {
 								{"  "}food: <span className="t-s">"dragon fruit"</span>,{"\n"}
 								{"}"}){"\n\n"}
 								part.calories{" "}
-								<span className="t-c">{"// 60 — typed, validated"}</span>
+								<span className="t-c">{"// 60, typed, validated"}</span>
 							</code>
 						</CodePanel>
 					</div>
@@ -209,7 +209,7 @@ export default function HomePage() {
 					<p className="v-lead v-lead-center" data-rise style={rd(80)}>
 						Blocks run on the Vercel AI SDK, so every provider it supports works
 						unchanged. <code className="v-chip">ai</code> and{" "}
-						<code className="v-chip">zod</code> are peer deps — never bundled.
+						<code className="v-chip">zod</code> are peer deps, never bundled.
 					</p>
 					<div className="v-providers">
 						{PROVIDERS.map((p, i) => (
@@ -242,8 +242,8 @@ export default function HomePage() {
 						Born inside Opsy.
 					</h2>
 					<p className="v-lead v-lead-wide" data-rise style={rd(80)}>
-						Five blocks turn messy, schema-shaped Terraform data into product UI
-						— each a <code className="v-chip">.get({"{ … }"})</code> cached on
+						Five blocks turn messy, schema-shaped Terraform data into product
+						UI, each a <code className="v-chip">.get({"{ … }"})</code> cached on
 						identity.
 					</p>
 					<div className="v-wild" data-rise style={rd(140)}>

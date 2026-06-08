@@ -1,10 +1,10 @@
-// @thinking-blocks/core — the in-memory reader.
+// @thinking-blocks/core: the in-memory reader.
 //
 // Serves the dashboard straight from an InMemoryThinkingBlockStore: same wire
 // shapes as the Postgres audit queries, grouped/paginated/summarised in plain
 // JS over the store's arrays. The store is per-process, so seed and serve in the
 // same process (the test harness in examples/nutrition does exactly this). This is
-// the read mirror of InMemoryThinkingBlockStore — write through the store, read
+// the read mirror of InMemoryThinkingBlockStore. Write through the store, read
 // through this.
 
 import type { ThinkingBlockArtifactRecord } from "@thinking-blocks/store"

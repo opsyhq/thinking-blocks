@@ -4,7 +4,7 @@
 // Routes mirror the five read endpoints the dashboard talks to. Each one parses
 // its query string with the zod schema that owns it (from @thinking-blocks/core)
 // and hands the typed result to the matching ThinkingBlockReader method. The
-// reader is backend-agnostic — Postgres or in-memory both satisfy it — so this
+// reader is backend-agnostic (Postgres or in-memory both satisfy it) so this
 // server never touches a database directly. There is no auth middleware: this
 // runs behind whatever access boundary the host already enforces.
 

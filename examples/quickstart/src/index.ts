@@ -41,7 +41,7 @@ const productBrief = new ThinkingBlock<{ idea: string }, Brief>({
 	prepareCall: ({ input }) => ({
 		prompt: `Turn this raw product idea into a crisp brief.\n\nIDEA: ${input.idea}`,
 	}),
-	// An inspector — a model judge that gates the part. If it scraps the part,
+	// An inspector: a model judge that gates the part. If it scraps the part,
 	// the machine reworks it with the feedback instead of shipping a weak one.
 	validators: [
 		judge<{ idea: string }, Brief, z.infer<typeof Judgement>>(

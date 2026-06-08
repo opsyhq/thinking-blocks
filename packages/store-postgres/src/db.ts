@@ -6,7 +6,7 @@ import * as schema from "./schema"
 
 type Db = PostgresJsDatabase<typeof schema>
 
-/** `db` or a drizzle transaction — use for helpers that work in both. */
+/** `db` or a drizzle transaction. Use for helpers that work in both. */
 export type Executor = Db | Parameters<Parameters<Db["transaction"]>[0]>[0]
 
 /**

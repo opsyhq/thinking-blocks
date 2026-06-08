@@ -2,7 +2,7 @@
 
 **A warehouse serves what you put in. A factory makes what you ask for.**
 
-Today's software is a warehouse: it shelves the data you loaded and 404s on a miss. A Thinking Block is a factory — a machine you order from with `.get(input)` and always get a finished part: worked to spec by code plus an AI agent, passed through QC, reworked on a fail, stamped with a serial (its identity), and kept. Every order after that on the same serial ships the part cold, with no model call. You stop improvising one-off prompts and start manufacturing inspectable product primitives:
+Today's software is a warehouse: it shelves the data you loaded and 404s on a miss. A Thinking Block is a factory: a machine you order from with `.get(input)` and always get a finished part, worked to spec by code plus an AI agent, passed through QC, reworked on a fail, stamped with a serial (its identity), and kept. Every order after that on the same serial ships the part cold, with no model call. You stop improvising one-off prompts and start manufacturing inspectable product primitives:
 
 ```txt
 function + AI agent + validation + memory + artifact + trace
@@ -20,7 +20,7 @@ const text = await generateObject({
   model,
   prompt: `which fields of the ${type} resource point at other resources?`,
 })
-// no identity, no cache, no validation, no trace — recomputed every render
+// no identity, no cache, no validation, no trace: recomputed every render
 
 // RIGHT mental model: a capability cached on identity
 const rels = await resourceRelationships.get({ resource, type, version })
@@ -61,8 +61,8 @@ identity: (input) =>
 
 **First call: reason, validate, store.** The block runs a tool-using agent (it can call `searchProviderTypes` and `getProviderTypeSchema` to confirm targets), constrained by instructions that define what a directional relationship is. The raw output then passes two real validators before anything is stored:
 
-- `provider-schema` — every emitted source/target path must exist in the actual provider schema, with the right direction. Hallucinated paths are rejected with structured feedback.
-- `identity-uniqueness` — no ambiguous duplicate rules.
+- `provider-schema`: every emitted source/target path must exist in the actual provider schema, with the right direction. Hallucinated paths are rejected with structured feedback.
+- `identity-uniqueness`: no ambiguous duplicate rules.
 
 On rejection the block retries (`attempts: { max: 3 }`) with the validator feedback fed back into the prompt. Only a result that survives validation is committed, and the artifact adapter materializes a stable `key` per rule on commit. See [`relationship-rules/block.ts`](../../opsy-open/apps/api/src/resources/artifacts/relationship-rules/block.ts), [`relationship-rules/validators.ts`](../../opsy-open/apps/api/src/resources/artifacts/relationship-rules/validators.ts), and [`relationship-rules/schema.ts`](../../opsy-open/apps/api/src/resources/artifacts/relationship-rules/schema.ts).
 
@@ -94,13 +94,13 @@ Five real Thinking Blocks ship in opsy today. Each is a capability you call with
 
 | Capability | Identity input | Structured output | Evidence |
 | --- | --- | --- | --- |
-| `resourceRelationships.get({ ref, kind, type, schema, schemaHash })` | `provider:kind:type:schemaHash` | `{ rules: [{ key, source{kind,type,path}, target{kind,type,path}, relationship }] }` — a validated directional relationship graph between resource fields | [`relationship-rules/block.ts`](../../opsy-open/apps/api/src/resources/artifacts/relationship-rules/block.ts) |
-| `resourceTypeIcon.get({ provider, type })` | `resource-type-icon:provider:type:<icon set id>` | `{ assetKey }` — an existing SVG object key in the provider icon catalog, verified to exist in S3 | [`icon/block.ts`](../../opsy-open/apps/api/src/resources/artifacts/icon/block.ts) |
-| `resourceTypeMetadata.get({ provider, kind, type, schema, schemaHash })` | `provider:kind:type:schemaHash` | `{ name, display: "card" \| "chip" }` — a human product name and diagram footprint for the type | [`metadata/block.ts`](../../opsy-open/apps/api/src/resources/artifacts/metadata/block.ts) |
-| `resourceFieldLayout.get({ provider, kind, type, schemaHash, fields })` | `provider:kind:type:schemaHash` | `{ create, sections[] }` — a create section plus edit sections/groups/rows arranging every schema field into a real form | [`field-layout/block.ts`](../../opsy-open/apps/api/src/resources/artifacts/field-layout/block.ts) |
-| `resourceFieldMetadata.get({ provider, kind, type, schemaHash, fields })` | `provider:kind:type:schemaHash` | `{ fields: { [path]: { label, help?, icon? } } }` — per-field labels, actionable help, and Lucide icons | [`field-metadata/block.ts`](../../opsy-open/apps/api/src/resources/artifacts/field-metadata/block.ts) |
+| `resourceRelationships.get({ ref, kind, type, schema, schemaHash })` | `provider:kind:type:schemaHash` | `{ rules: [{ key, source{kind,type,path}, target{kind,type,path}, relationship }] }`, a validated directional relationship graph between resource fields | [`relationship-rules/block.ts`](../../opsy-open/apps/api/src/resources/artifacts/relationship-rules/block.ts) |
+| `resourceTypeIcon.get({ provider, type })` | `resource-type-icon:provider:type:<icon set id>` | `{ assetKey }`, an existing SVG object key in the provider icon catalog, verified to exist in S3 | [`icon/block.ts`](../../opsy-open/apps/api/src/resources/artifacts/icon/block.ts) |
+| `resourceTypeMetadata.get({ provider, kind, type, schema, schemaHash })` | `provider:kind:type:schemaHash` | `{ name, display: "card" \| "chip" }`, a human product name and diagram footprint for the type | [`metadata/block.ts`](../../opsy-open/apps/api/src/resources/artifacts/metadata/block.ts) |
+| `resourceFieldLayout.get({ provider, kind, type, schemaHash, fields })` | `provider:kind:type:schemaHash` | `{ create, sections[] }`, a create section plus edit sections/groups/rows arranging every schema field into a real form | [`field-layout/block.ts`](../../opsy-open/apps/api/src/resources/artifacts/field-layout/block.ts) |
+| `resourceFieldMetadata.get({ provider, kind, type, schemaHash, fields })` | `provider:kind:type:schemaHash` | `{ fields: { [path]: { label, help?, icon? } } }`, per-field labels, actionable help, and Lucide icons | [`field-metadata/block.ts`](../../opsy-open/apps/api/src/resources/artifacts/field-metadata/block.ts) |
 
-All five feed one downstream consumer, `getResourceTypeArtifacts`, which calls them in parallel and hands the renderer a uniform `{ status, data, error, artifactId }` lookup per capability — no caller hand-rolls cache, retry, or validation logic. See [`apps/api/src/resources/artifacts.ts`](../../opsy-open/apps/api/src/resources/artifacts.ts) and the search path in [`apps/api/src/schema/provider-catalog.ts`](../../opsy-open/apps/api/src/schema/provider-catalog.ts).
+All five feed one downstream consumer, `getResourceTypeArtifacts`, which calls them in parallel and hands the renderer a uniform `{ status, data, error, artifactId }` lookup per capability. No caller hand-rolls cache, retry, or validation logic. See [`apps/api/src/resources/artifacts.ts`](../../opsy-open/apps/api/src/resources/artifacts.ts) and the search path in [`apps/api/src/schema/provider-catalog.ts`](../../opsy-open/apps/api/src/schema/provider-catalog.ts).
 
 Note on versioning grounded in the real code: `resource-field-layout` and `resource-field-metadata` both run at version `v2`. The schema field set changed (computed-only fields were added), so the maintainers bumped the block version and every identity regenerated against the new reality. That is the invalidation story as a one-line change, not a migration.
 
@@ -119,10 +119,10 @@ Note on versioning grounded in the real code: `resource-field-layout` and `resou
 1. A warehouse serves what you put in. A factory makes what you ask for.
 2. Today's software shelves data and 404s on a miss. A Thinking Block makes the part on demand.
 3. Stop improvising prompts. Start manufacturing capabilities.
-4. `block.get(input)` never misses — if the part was never made, the machine makes it now.
+4. `block.get(input)` never misses: if the part was never made, the machine makes it now.
 5. Content-addressed AI: same serial, same validated part, instantly.
 6. The catalog is infinite, because the factory makes what you order.
 
 ## Landing-page hero
 
-Your product needs answers that no static table can keep correct: which schema fields point at other resources, what to call this type, which icon is real, how to lay out a form for data nobody has seen yet. A warehouse can only hand you what someone stocked — reach for a prompt, get a blob, and recompute it on every render with no cache, no validation, and no trace. A Thinking Block is a factory for that work. Build a machine once with `function + AI agent + validation + memory + artifact + trace`, then order from it like a typed function: `const rels = await resourceRelationships.get({ resource, type, version })`. The first order works the raw material to spec, runs QC, and keeps a durable part addressed by its serial. Every order after that ships the same validated part instantly — remade when reality changes — with a full traveler for every step. The machine makes it once. The product orders it forever.
+Your product needs answers that no static table can keep correct: which schema fields point at other resources, what to call this type, which icon is real, how to lay out a form for data nobody has seen yet. A warehouse can only hand you what someone stocked: reach for a prompt, get a blob, and recompute it on every render with no cache, no validation, and no trace. A Thinking Block is a factory for that work. Build a machine once with `function + AI agent + validation + memory + artifact + trace`, then order from it like a typed function: `const rels = await resourceRelationships.get({ resource, type, version })`. The first order works the raw material to spec, runs QC, and keeps a durable part addressed by its serial. Every order after that ships the same validated part instantly (remade when reality changes) with a full traveler for every step. The machine makes it once. The product orders it forever.

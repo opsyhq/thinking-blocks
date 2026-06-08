@@ -55,7 +55,7 @@ const second = await nutrition.get({ food: "dragon fruit" }) // source: "cached"
 The first `get` runs the operator, inspects the part, and keeps it. The second
 order with the same serial ships the same part cold, with no model call.
 
-`get` is the order window — it hands you the current part, making it if the
+`get` is the order window. It hands you the current part, making it if the
 machine never has. `generate` forces a fresh run:
 
 ```ts
@@ -75,7 +75,7 @@ const nutrition = new ThinkingBlock({
   // ...
   validators: [
     // A caliper: the stated calories must reconcile with the macros
-    // (4·protein + 4·carbs + 9·fat) — catches a hallucinated number a schema can't.
+    // (4·protein + 4·carbs + 9·fat), catching a hallucinated number a schema can't.
     check("macros-reconcile", {
       validate: ({ output }) => {
         const implied = 4 * output.protein + 4 * output.carbs + 9 * output.fat
@@ -89,8 +89,8 @@ const nutrition = new ThinkingBlock({
 })
 ```
 
-A runnable version of this block — plus an `emoji` block, a durable file-backed
-store, and the dashboard — lives in
+A runnable version of this block (plus an `emoji` block, a durable file-backed
+store, and the dashboard) lives in
 [`examples/nutrition`](https://github.com/opsyhq/thinking-blocks/tree/main/examples/nutrition).
 For the smallest possible single-file run, see
 [`examples/quickstart`](https://github.com/opsyhq/thinking-blocks/tree/main/examples/quickstart).

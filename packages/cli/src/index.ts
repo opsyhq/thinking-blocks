@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// @thinking-blocks/cli — `thinking-blocks` / `tb`
+// @thinking-blocks/cli: `thinking-blocks` / `tb`
 import { existsSync } from "node:fs"
 import { dirname, join } from "node:path"
 import { fileURLToPath } from "node:url"

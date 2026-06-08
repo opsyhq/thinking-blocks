@@ -26,7 +26,7 @@ jobs:
           if [ -n "$TOKEN" ]; then
             echo "ready=true" >> "$GITHUB_OUTPUT"
           else
-            echo "::warning::CLOUDFLARE_API_TOKEN not set — skipping deploy. Add it in Settings → Secrets and variables → Actions."
+            echo "::warning::CLOUDFLARE_API_TOKEN not set, skipping deploy. Add it in Settings → Secrets and variables → Actions."
             echo "ready=false" >> "$GITHUB_OUTPUT"
           fi
 

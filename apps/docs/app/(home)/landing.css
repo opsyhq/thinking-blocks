@@ -1,4 +1,4 @@
-/* Landing — modeled faithfully on workflow-sdk.dev: pure black, a hairline-
+/* Landing, modeled faithfully on workflow-sdk.dev: pure black, a hairline-
    bordered content frame with horizontal dividers, enormous ultra-bold white
    type, an inline code chip, one install pill, and syntax-highlighted code
    panels. Color appears ONLY inside code. Self-contained; never theme-flips. */
@@ -35,7 +35,7 @@
 	font-size: 0.85em;
 }
 
-/* ── Nav (full-bleed, bordered bottom) ───────────────────────────────── */
+/* ·· Nav (full-bleed, bordered bottom) ································· */
 .v-nav {
 	position: sticky;
 	top: 0;
@@ -98,7 +98,7 @@
 	border-color: rgba(255, 255, 255, 0.3);
 }
 
-/* ── Bordered content frame ──────────────────────────────────────────── */
+/* ·· Bordered content frame ········································ */
 .v-frame {
 	max-width: 1120px;
 	margin-inline: auto;
@@ -109,7 +109,7 @@
 	border-top: 1px solid var(--line);
 }
 
-/* ── Headings ────────────────────────────────────────────────────────── */
+/* ·· Headings ···························································· */
 .v-h2 {
 	margin: 0;
 	font-size: clamp(1.9rem, 4.4vw, 3rem);
@@ -150,7 +150,7 @@
 	white-space: nowrap;
 }
 
-/* ── Hero ────────────────────────────────────────────────────────────── */
+/* ·· Hero ······························································ */
 .v-hero {
 	padding: clamp(4.5rem, 12vw, 9rem) clamp(1.25rem, 4vw, 3.5rem)
 		clamp(3.5rem, 8vw, 6rem);
@@ -161,7 +161,7 @@
 }
 .v-title {
 	margin: 0;
-	/* Sized to fill the hero; `text-wrap: balance` wraps the headline to even
+	/* Sized to fill the hero. `text-wrap: balance` wraps the headline to even
 	   lines (the current headline rides two balanced lines on most widths). */
 	font-size: clamp(2.4rem, 6.8vw, 4.7rem);
 	font-weight: 800;
@@ -230,7 +230,7 @@
 	color: var(--muted);
 }
 
-/* ── Split (comparison) section ──────────────────────────────────────── */
+/* ·· Split (comparison) section ······································ */
 .v-split {
 	display: grid;
 	grid-template-columns: 0.85fr 1.15fr;
@@ -241,7 +241,7 @@
 	max-width: 34ch;
 }
 
-/* ── Code panels ─────────────────────────────────────────────────────── */
+/* ·· Code panels ······················································· */
 .v-code {
 	border: 1px solid var(--line);
 	border-radius: 12px;
@@ -314,18 +314,18 @@
 	color: #3fb950;
 }
 
-/* ── Two-column code ─────────────────────────────────────────────────── */
+/* ·· Two-column code ················································· */
 .v-cols {
 	margin-top: 2rem;
 	display: grid;
 	grid-template-columns: 1fr 1fr;
 	gap: 1.25rem;
-	/* Each panel hugs its own content — the shorter use.ts must not stretch to
+	/* Each panel hugs its own content, so the shorter use.ts must not stretch to
 	   block.ts's height and trail dead space. */
 	align-items: start;
 }
 
-/* ── Providers ───────────────────────────────────────────────────────── */
+/* ·· Providers ························································· */
 .v-providers {
 	margin: 2.2rem auto 0;
 	max-width: 760px;
@@ -344,7 +344,7 @@
 	background: var(--panel);
 }
 
-/* ── Feature grid (bold lead + gray continuation) ────────────────────── */
+/* ·· Feature grid (bold lead + gray continuation) ····················· */
 .v-grid {
 	margin-top: 2.4rem;
 	display: grid;
@@ -370,7 +370,7 @@
 	font-weight: 600;
 }
 
-/* ── In the wild ─────────────────────────────────────────────────────── */
+/* ·· In the wild ····················································· */
 .v-wild {
 	margin-top: 2.2rem;
 	border: 1px solid var(--line);
@@ -400,7 +400,7 @@
 	line-height: 1.5;
 }
 
-/* ── Final CTA ───────────────────────────────────────────────────────── */
+/* ·· Final CTA ························································· */
 .v-final {
 	text-align: center;
 }
@@ -416,7 +416,7 @@
 	margin-top: 2.2rem;
 }
 
-/* ── Footer ──────────────────────────────────────────────────────────── */
+/* ·· Footer ···························································· */
 .v-foot {
 	border-top: 1px solid var(--line);
 }
@@ -446,7 +446,7 @@
 	color: var(--faint);
 }
 
-/* ── Motion ──────────────────────────────────────────────────────────── */
+/* ·· Motion ···························································· */
 /* A subtle fade-up, the way reasonblocks slides its blocks in on load. The
    hero plays immediately on first paint; everything below reveals as it
    scrolls into view (the <Reveal> island adds `reveal-on` + `is-in`). */
@@ -507,7 +507,7 @@
 	}
 }
 
-/* ── Responsive ──────────────────────────────────────────────────────── */
+/* ·· Responsive ······················································· */
 @media (max-width: 860px) {
 	.v-split {
 		grid-template-columns: 1fr;
