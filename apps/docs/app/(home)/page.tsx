@@ -99,10 +99,9 @@ export default function HomePage() {
 						Closed loops that manufacture the answer.
 					</h1>
 					<p className="v-sub">
-						Invoke a thinking block with{" "}
-						<code className="v-chip">block.get(input)</code> and it generates,
-						validates, and caches the result. Made the first time, instant
-						every time after.
+						Instead of shipping static software, you define dynamic
+						capabilities — closed loops that generate a validated answer on
+						demand, then serve the same one forever.
 					</p>
 					<div className="v-hero-actions">
 						<CopyInstall cmd={INSTALL} />
