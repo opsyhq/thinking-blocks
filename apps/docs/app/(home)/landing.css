@@ -161,11 +161,14 @@
 }
 .v-title {
 	margin: 0;
-	font-size: clamp(2.9rem, 8.2vw, 5.6rem);
+	/* Sized so "The software factory primitive" holds one line down to ~470px
+	   (it only wraps on the narrowest phones, where one line can't fit). */
+	font-size: clamp(2.4rem, 6.8vw, 4.7rem);
 	font-weight: 800;
-	line-height: 0.98;
+	line-height: 1.02;
 	letter-spacing: -0.045em;
 	color: var(--fg-strong);
+	text-wrap: balance;
 }
 .v-sub {
 	margin: 1.6rem auto 0;

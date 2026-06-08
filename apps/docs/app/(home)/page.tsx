@@ -95,11 +95,7 @@ export default function HomePage() {
 			<div className="v-frame">
 				{/* ── Hero ───────────────────────────────────────────── */}
 				<section className="v-hero">
-					<h1 className="v-title">
-						the software factory
-						<br />
-						primitive for AI.
-					</h1>
+					<h1 className="v-title">The software factory primitive</h1>
 					<p className="v-sub">Don't fetch the answer. Manufacture it.</p>
 					<div className="v-hero-actions">
 						<CopyInstall cmd={INSTALL} />
