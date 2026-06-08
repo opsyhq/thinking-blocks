@@ -2,9 +2,8 @@
 
 import { useState } from "react"
 
-/* Tiny interactive islands for the otherwise-static landing: the install pill's
-   copy button and the With/Without code comparison toggle. Everything else on
-   the page is server-rendered. */
+/* The one interactive island on the otherwise-static landing: the install
+   pill's copy button. Everything else on the page is server-rendered. */
 
 export function CopyInstall({ cmd }: { cmd: string }) {
 	const [copied, setCopied] = useState(false)
@@ -64,96 +63,5 @@ export function CopyInstall({ cmd }: { cmd: string }) {
 				)}
 			</span>
 		</button>
-	)
-}
-
-export function Comparison() {
-	const [withTb, setWithTb] = useState(true)
-	return (
-		<div className="v-cmp">
-			<div className="v-seg" role="tablist" aria-label="Comparison">
-				<button
-					type="button"
-					role="tab"
-					aria-selected={withTb}
-					className={withTb ? "on" : ""}
-					onClick={() => setWithTb(true)}
-				>
-					With Thinking Blocks
-				</button>
-				<button
-					type="button"
-					role="tab"
-					aria-selected={!withTb}
-					className={withTb ? "" : "on"}
-					onClick={() => setWithTb(false)}
-				>
-					Without
-				</button>
-			</div>
-			<div className="v-code">
-				<pre className="v-pre">{withTb ? <WithCode /> : <WithoutCode />}</pre>
-				<div className="v-code-foot">
-					{withTb ? (
-						<>
-							<span className="v-dot v-dot-ok" /> second <code>.get()</code>{" "}
-							ships the same part — no model call
-						</>
-					) : (
-						<>
-							<span className="v-dot v-dot-warn" /> invent a cache key, validate
-							by hand, and a miss still 404s
-						</>
-					)}
-				</div>
-			</div>
-		</div>
-	)
-}
-
-function WithCode() {
-	return (
-		<code>
-			<span className="t-k">const</span> nutrition ={" "}
-			<span className="t-f">thinkingBlock</span>({"{ schema, agent, check }"})
-			{"\n\n"}
-			<span className="t-k">const</span> a = <span className="t-k">await</span>{" "}
-			nutrition.<span className="t-f">get</span>({"{ "}food:{" "}
-			<span className="t-s">"dragon fruit"</span>
-			{" }"}) <span className="t-c">{"// generated · 2.9s"}</span>
-			{"\n"}
-			<span className="t-k">const</span> b = <span className="t-k">await</span>{" "}
-			nutrition.<span className="t-f">get</span>({"{ "}food:{" "}
-			<span className="t-s">"dragon fruit"</span>
-			{" }"}) <span className="t-ok">{"// cached · 0ms"}</span>
-		</code>
-	)
-}
-
-function WithoutCode() {
-	return (
-		<code>
-			<span className="t-k">let</span> row = <span className="t-k">await</span>{" "}
-			db.parts.<span className="t-f">find</span>({"{ "}food{" }"}){"\n"}
-			<span className="t-k">if</span> (!row) {"{"}
-			{"\n"}
-			{"  "}
-			<span className="t-k">const</span> out ={" "}
-			<span className="t-k">await</span> model.
-			<span className="t-f">generate</span>(<span className="t-f">prompt</span>
-			(food))
-			{"\n"}
-			{"  "}
-			<span className="t-k">const</span> parsed = schema.
-			<span className="t-f">parse</span>(out){" "}
-			<span className="t-c">{"// hope it validates"}</span>
-			{"\n"}
-			{"  "}row = <span className="t-k">await</span> db.parts.
-			<span className="t-f">insert</span>({"{ "}food, parsed{" }"}){"\n"}
-			{"}"}
-			{"\n"}
-			<span className="t-k">return</span> row.parsed{" "}
-			<span className="t-c">{"// on a miss earlier: 404"}</span>
-		</code>
 	)
 }

@@ -238,37 +238,6 @@
 	max-width: 34ch;
 }
 
-/* segmented toggle */
-.v-cmp {
-	min-width: 0;
-}
-.v-seg {
-	display: inline-flex;
-	padding: 3px;
-	border-radius: 9px;
-	border: 1px solid var(--line);
-	background: var(--panel);
-	margin-bottom: 0.85rem;
-}
-.v-seg button {
-	appearance: none;
-	border: 0;
-	background: none;
-	cursor: pointer;
-	font-family: var(--sans);
-	font-size: 0.82rem;
-	font-weight: 500;
-	padding: 0.4rem 0.85rem;
-	border-radius: 7px;
-	color: var(--muted);
-	transition: color 0.15s ease, background 0.15s ease;
-}
-.v-seg button.on {
-	color: var(--fg-strong);
-	background: rgba(255, 255, 255, 0.08);
-	box-shadow: inset 0 0 0 1px var(--line);
-}
-
 /* ── Code panels ─────────────────────────────────────────────────────── */
 .v-code {
 	border: 1px solid var(--line);
@@ -320,10 +289,6 @@
 .v-dot-ok {
 	background: #3fb950;
 	box-shadow: 0 0 8px rgba(63, 185, 80, 0.6);
-}
-.v-dot-warn {
-	background: #d29922;
-	box-shadow: 0 0 8px rgba(210, 153, 34, 0.55);
 }
 
 /* syntax tokens (GitHub-dark-ish, the only color on the page) */

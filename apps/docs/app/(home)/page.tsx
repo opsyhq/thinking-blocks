@@ -1,9 +1,9 @@
 import Link from "next/link"
 import type { ReactNode } from "react"
-import { Comparison, CopyInstall } from "./landing-client"
+import { CopyInstall } from "./landing-client"
 import "./landing.css"
 
-const INSTALL = "npm install thinking-blocks ai zod"
+const INSTALL = "npm install thinking-blocks"
 
 const FEATURES = [
 	{
@@ -96,9 +96,8 @@ export default function HomePage() {
 						Manufacture it.
 					</h1>
 					<p className="v-sub">
-						<code className="v-chip">.get(input)</code> brings durability,
-						validation, and memory to any AI call. Define a block once — every
-						call returns a finished, validated part, cached on its identity.
+						<code className="v-chip">.get(input)</code> is the software factory
+						primitive for AI — durable, validated, cached on its identity.
 					</p>
 					<div className="v-hero-actions">
 						<CopyInstall cmd={INSTALL} />
@@ -122,7 +121,28 @@ export default function HomePage() {
 							keeps it on its serial.
 						</p>
 					</div>
-					<Comparison />
+					<CodePanel
+						title="quickstart.ts"
+						foot="second .get() ships the same part — no model call"
+					>
+						<code>
+							<span className="t-k">const</span> nutritionBlock ={" "}
+							<span className="t-k">new</span>{" "}
+							<span className="t-f">ThinkingBlock</span>(
+							{"{ schema, agent, check }"}){"\n\n"}
+							<span className="t-k">const</span> a ={" "}
+							<span className="t-k">await</span> nutritionBlock.
+							<span className="t-f">get</span>({"{ "}food:{" "}
+							<span className="t-s">"dragon fruit"</span>
+							{" }"}) <span className="t-c">{"// generated · 2.9s"}</span>
+							{"\n"}
+							<span className="t-k">const</span> b ={" "}
+							<span className="t-k">await</span> nutritionBlock.
+							<span className="t-f">get</span>({"{ "}food:{" "}
+							<span className="t-s">"dragon fruit"</span>
+							{" }"}) <span className="t-ok">{"// cached · 0ms"}</span>
+						</code>
+					</CodePanel>
 				</section>
 
 				{/* ── Define a block once ────────────────────────────── */}
@@ -133,23 +153,35 @@ export default function HomePage() {
 						That's the whole declaration.
 					</p>
 					<div className="v-cols">
-						<CodePanel title="block.ts" foot="schema in, typed part out">
+						<CodePanel
+							title="block.ts"
+							foot="a chain of checks gates every part"
+						>
 							<code>
-								<span className="t-k">const</span> nutrition ={" "}
-								<span className="t-f">thinkingBlock</span>({"{"}
+								<span className="t-k">const</span> nutritionBlock ={" "}
+								<span className="t-k">new</span>{" "}
+								<span className="t-f">ThinkingBlock</span>({"{"}
 								{"\n"}
-								{"  "}schema: Nutrition,
-								{"\n"}
+								{"  "}name: <span className="t-s">"nutrition"</span>,{"\n"}
+								{"  "}schema: Nutrition,{"\n"}
 								{"  "}agent: <span className="t-f">myAgent</span>,{"\n"}
-								{"  "}check: (p) =&gt; p.calories &gt;{" "}
-								<span className="t-n">0</span>,{"\n"}
+								{"  "}validators: [{"\n"}
+								{"    "}
+								<span className="t-f">check</span>(
+								<span className="t-s">"macros-reconcile"</span>,{" "}
+								{"{ validate }"}),{"\n"}
+								{"    "}
+								<span className="t-f">judge</span>(
+								<span className="t-s">"serving-realistic"</span>,{" "}
+								{"{ agent, validate }"}),{"\n"}
+								{"  "}],{"\n"}
 								{"}"})
 							</code>
 						</CodePanel>
 						<CodePanel title="use.ts" foot="cached on identity">
 							<code>
 								<span className="t-k">const</span> part ={" "}
-								<span className="t-k">await</span> nutrition.
+								<span className="t-k">await</span> nutritionBlock.
 								<span className="t-f">get</span>({"{"}
 								{"\n"}
 								{"  "}food: <span className="t-s">"dragon fruit"</span>,{"\n"}
