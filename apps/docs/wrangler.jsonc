@@ -2,6 +2,9 @@
 	"$schema": "node_modules/wrangler/config-schema.json",
 	"name": "thinking-blocks",
 	"compatibility_date": "2026-06-01",
+	// Serve from the apex domain. `custom_domain` makes Cloudflare provision the
+	// DNS record + edge cert for this zone automatically on deploy.
+	"routes": [{ "pattern": "thinkingblocks.dev", "custom_domain": true }],
 	// Static-assets-only Worker: no server code, just the Next.js `output: "export"`
 	// directory served from Cloudflare's edge. `pnpm build` regenerates ./out.
 	"assets": {

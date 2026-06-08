@@ -1,73 +1,52 @@
 import Link from "next/link"
+import type { CSSProperties, ReactNode } from "react"
+import { CopyInstall, Reveal } from "./landing-client"
 import "./landing.css"
 
-const STEPS = [
-	{
-		n: "1",
-		title: "An order comes in",
-		body: 'An input is the order: { food: "dragon fruit" }. Its identity is the serial number — same order, same part, forever.',
-	},
-	{
-		n: "2",
-		title: "The machine runs",
-		body: "Your AI agent works the raw material to spec — a Zod schema. Structured, typed output, not a blob of text.",
-	},
-	{
-		n: "3",
-		title: "QC gates it",
-		body: "check is a code caliper; judge is a model inspector. A part that fails is reworked with the feedback, not shipped.",
-	},
-	{
-		n: "4",
-		title: "Kept on its serial",
-		body: "The finished part is stamped and stored. The next .get() with the same identity ships cold — no model call.",
-	},
-]
+const INSTALL = "npm install thinking-blocks"
+
+/* Per-item reveal stagger: feeds the `--rd` animation-delay the CSS reads. */
+const rd = (ms: number): CSSProperties =>
+	({ "--rd": `${ms}ms` }) as CSSProperties
 
 const FEATURES = [
 	{
-		e: "🔁",
-		title: "Identity-cached",
-		body: "Same input → same part, forever. No cache key to invent, no row to miss.",
+		lead: "Identity-cached.",
+		body: "Same input resolves to the same part, forever. No cache key to invent, no row to miss, no TTL to tune.",
 	},
 	{
-		e: "✅",
-		title: "Validated before kept",
-		body: "Deterministic checks and model judges gate every output. Bad parts get reworked, not stored.",
+		lead: "Validated before kept.",
+		body: "Deterministic checks and model judges gate every output. Bad parts are reworked with feedback, never stored.",
 	},
 	{
-		e: "🧾",
-		title: "Versioned & content-addressed",
-		body: "Change the recipe and old parts are superseded, not overwritten. Every part is traceable.",
+		lead: "Content-addressed.",
+		body: "Change the recipe and old parts are superseded, not overwritten. Every part is versioned and traceable.",
 	},
 	{
-		e: "💾",
-		title: "Durable by default",
-		body: "A file on disk for local, Postgres for production. Parts and their travelers survive restarts.",
+		lead: "Durable by default.",
+		body: "A file on disk locally, Postgres in production. Parts and their run history survive restarts.",
 	},
 	{
-		e: "📡",
-		title: "Observable",
-		body: "A no-login dashboard shows every block, part, model call, and QC result. tb dev, one port.",
+		lead: "Observable.",
+		body: "A no-login dashboard shows every block, part, model call, and QC result. One command, one port.",
 	},
 	{
-		e: "🎯",
-		title: "One tiny API",
-		body: ".get(input) hands you the part, making it if it never existed. .generate() forces a fresh run.",
+		lead: "One tiny API.",
+		body: ".get(input) hands you the part, manufacturing it if it never existed. .generate() forces a fresh run.",
 	},
 ]
 
 const WILD = [
 	{
-		call: "resourceRelationships.get({ resource, type, version })",
-		body: "which fields point at other resources, and how — a validated directional graph.",
+		call: "resourceRelationships.get({ resource, type })",
+		body: "which fields point at other resources — a validated directional graph.",
 	},
 	{
-		call: "resourceTypeMetadata.get({ provider, kind, type, schemaHash })",
+		call: "resourceTypeMetadata.get({ provider, type })",
 		body: "a human product name and diagram footprint for an unknown type.",
 	},
 	{
-		call: "resourceFieldLayout.get({ provider, kind, type, fields })",
+		call: "resourceFieldLayout.get({ type, fields })",
 		body: "every schema field arranged into a real, sectioned form.",
 	},
 	{
@@ -80,174 +59,258 @@ const WILD = [
 	},
 ]
 
+const PROVIDERS = [
+	"openai",
+	"anthropic",
+	"google",
+	"mistral",
+	"groq",
+	"bedrock",
+	"ollama",
+]
+
 export default function HomePage() {
 	return (
-		<main className="tb-landing">
-			{/* ── Hero ─────────────────────────────────────────────── */}
-			<section className="tb-hero">
-				<span className="tb-eyebrow">
-					Open source · TypeScript · <b>Apache-2.0</b>
-				</span>
-				<h1 className="tb-hero-title">
-					Don't fetch the answer.{" "}
-					<span className="tb-mark">Manufacture it.</span>
-				</h1>
-				<p className="tb-hero-sub">
-					Today's software is a warehouse — it shelves data and 404s on a miss.
-					A Thinking Block is a factory: call <code>.get(input)</code> and you
-					always get a finished part — built to spec, passed through QC, kept on
-					its serial. The next order ships cold. The catalog is infinite.
-				</p>
-				<div className="tb-cta-row">
-					<Link className="tb-btn tb-btn-primary" href="/docs/quickstart">
-						Start building →
+		<div className="v">
+			<Reveal />
+			<header className="v-nav">
+				<div className="v-nav-inner">
+					<Link className="v-brand" href="/">
+						<span className="v-logo" aria-hidden="true" />
+						<span className="v-brand-name">thinking-blocks</span>
 					</Link>
-					<Link className="tb-btn tb-btn-ghost" href="/docs">
-						Read the docs
-					</Link>
+					<nav className="v-nav-links">
+						<Link href="/docs">Docs</Link>
+						<Link href="/docs/concepts">Concepts</Link>
+						<a href="https://github.com/opsyhq/thinking-blocks">
+							GitHub <span className="v-ext">↗</span>
+						</a>
+						<Link className="v-nav-cta" href="/docs/quickstart">
+							Get started
+						</Link>
+					</nav>
 				</div>
+			</header>
 
-				<div className="tb-line" aria-hidden="true">
-					<div className="tb-belt">
-						<span className="tb-part tb-part-1">🍌</span>
-						<span className="tb-part tb-part-2">🥝</span>
-						<span className="tb-part tb-part-3">🍕</span>
-						<span className="tb-bin">
-							📦<span>⚡</span>
-						</span>
-					</div>
-					<div className="tb-stations">
-						<span>order</span>
-						<span>make</span>
-						<span>QC ✓</span>
-						<span>keep</span>
-						<span>cached</span>
-					</div>
-				</div>
-			</section>
-
-			{/* ── The line ─────────────────────────────────────────── */}
-			<section className="tb-section">
-				<div className="tb-wrap">
-					<p className="tb-kicker">The line, end to end</p>
-					<h2 className="tb-h2">Four stations. One function call.</h2>
-					<p className="tb-lead">
-						You never load a row and hope it's there. You call the block — and
-						if the part was never made, the line makes it now, the same way
-						every time.
+			<div className="v-frame">
+				{/* ── Hero ───────────────────────────────────────────── */}
+				<section className="v-hero">
+					<h1 className="v-title">Don't fetch the answer. Manufacture it.</h1>
+					<p className="v-sub">
+						A versioned, validated, cached AI capability behind one call:{" "}
+						<code className="v-chip">block.get(input)</code>.
 					</p>
-					<div className="tb-steps">
-						{STEPS.map((s) => (
-							<div className="tb-step" key={s.n}>
-								<span className="tb-step-n">{s.n}</span>
-								<h3>{s.title}</h3>
-								<p>{s.body}</p>
-							</div>
-						))}
+					<div className="v-hero-actions">
+						<CopyInstall cmd={INSTALL} />
+						<Link className="v-hero-link" href="/docs/quickstart">
+							Read the quickstart <span className="v-ext">↗</span>
+						</Link>
 					</div>
-				</div>
-			</section>
+				</section>
 
-			{/* ── .get() never misses ──────────────────────────────── */}
-			<section className="tb-section">
-				<div className="tb-wrap">
-					<p className="tb-kicker">The whole point</p>
-					<h2 className="tb-h2">
-						<code>.get()</code> never misses.
+				{/* ── Comparison ─────────────────────────────────────── */}
+				<section className="v-section v-split">
+					<div className="v-split-head">
+						<h2 className="v-h2" data-rise>
+							A capability,
+							<br />
+							not a prompt.
+						</h2>
+						<p className="v-lead" data-rise style={rd(80)}>
+							You never load a row and hope it's there. Call the block — if the
+							part was never made, the line makes it now, validates it, and
+							keeps it on its serial.
+						</p>
+					</div>
+					<CodePanel
+						title="quickstart.ts"
+						foot="second .get() ships the same part — no model call"
+						delay={160}
+					>
+						<code>
+							<span className="t-k">const</span> nutritionBlock ={" "}
+							<span className="t-k">new</span>{" "}
+							<span className="t-f">ThinkingBlock</span>(
+							{"{ schema, agent, check }"}){"\n\n"}
+							<span className="t-k">const</span> a ={" "}
+							<span className="t-k">await</span> nutritionBlock.
+							<span className="t-f">get</span>({"{ "}food:{" "}
+							<span className="t-s">"dragon fruit"</span>
+							{" }"}) <span className="t-c">{"// generated · 2.9s"}</span>
+							{"\n"}
+							<span className="t-k">const</span> b ={" "}
+							<span className="t-k">await</span> nutritionBlock.
+							<span className="t-f">get</span>({"{ "}food:{" "}
+							<span className="t-s">"dragon fruit"</span>
+							{" }"}) <span className="t-ok">{"// cached · 0ms"}</span>
+						</code>
+					</CodePanel>
+				</section>
+
+				{/* ── Define a block once ────────────────────────────── */}
+				<section className="v-section">
+					<h2 className="v-h2" data-rise>
+						Define a block once.
 					</h2>
-					<p className="tb-lead">
-						The first call manufactures the part. The second call — same serial
-						— ships the same part cold, with no model call. Nothing to cache,
-						nothing to invalidate, nothing to 404.
+					<p className="v-lead v-lead-wide" data-rise style={rd(80)}>
+						A schema for the part, an agent to build it, and a gate to pass it.
+						That's the whole declaration.
 					</p>
-					<div className="tb-code">
-						<div className="tb-code-bar">
-							<i />
-							<i />
-							<i />
-						</div>
-						<pre>
+					<div className="v-cols">
+						<CodePanel
+							title="block.ts"
+							foot="a chain of checks gates every part"
+							delay={140}
+						>
 							<code>
-								{`const first  = await nutrition.`}
-								<span className="k">get</span>
-								{`({ food: "dragon fruit" }) `}
-								<span className="c">{"// makes it · ~3s"}</span>
+								<span className="t-k">const</span> nutritionBlock ={" "}
+								<span className="t-k">new</span>{" "}
+								<span className="t-f">ThinkingBlock</span>({"{"}
 								{"\n"}
-								{`const second = await nutrition.`}
-								<span className="k">get</span>
-								{`({ food: "dragon fruit" }) `}
-								<span className="g">{'// source: "cached" · 0ms'}</span>
+								{"  "}name: <span className="t-s">"nutrition"</span>,{"\n"}
+								{"  "}schema: Nutrition,{"\n"}
+								{"  "}agent: <span className="t-f">myAgent</span>,{"\n"}
+								{"  "}validators: [{"\n"}
+								{"    "}
+								<span className="t-f">check</span>(
+								<span className="t-s">"macros-reconcile"</span>,{" "}
+								{"{ validate }"}),{"\n"}
+								{"    "}
+								<span className="t-f">judge</span>(
+								<span className="t-s">"serving-realistic"</span>,{" "}
+								{"{ agent, validate }"}),{"\n"}
+								{"  "}],{"\n"}
+								{"}"})
 							</code>
-						</pre>
+						</CodePanel>
+						<CodePanel title="use.ts" foot="cached on identity" delay={220}>
+							<code>
+								<span className="t-k">const</span> part ={" "}
+								<span className="t-k">await</span> nutritionBlock.
+								<span className="t-f">get</span>({"{"}
+								{"\n"}
+								{"  "}food: <span className="t-s">"dragon fruit"</span>,{"\n"}
+								{"}"}){"\n\n"}
+								part.calories{" "}
+								<span className="t-c">{"// 60 — typed, validated"}</span>
+							</code>
+						</CodePanel>
 					</div>
-				</div>
-			</section>
+				</section>
 
-			{/* ── Features ─────────────────────────────────────────── */}
-			<section className="tb-section">
-				<div className="tb-wrap">
-					<p className="tb-kicker">What every block gives you</p>
-					<h2 className="tb-h2">A capability, not a prompt.</h2>
-					<div className="tb-features">
+				{/* ── Any model ──────────────────────────────────────── */}
+				<section className="v-section v-center">
+					<h2 className="v-h2 v-h2-center" data-rise>
+						Bring any model.
+					</h2>
+					<p className="v-lead v-lead-center" data-rise style={rd(80)}>
+						Blocks run on the Vercel AI SDK, so every provider it supports works
+						unchanged. <code className="v-chip">ai</code> and{" "}
+						<code className="v-chip">zod</code> are peer deps — never bundled.
+					</p>
+					<div className="v-providers">
+						{PROVIDERS.map((p, i) => (
+							<span className="v-provider" key={p} data-rise style={rd(i * 45)}>
+								{p}
+							</span>
+						))}
+					</div>
+				</section>
+
+				{/* ── Features ───────────────────────────────────────── */}
+				<section className="v-section">
+					<h2 className="v-h2" data-rise>
+						Everything a block gives you.
+					</h2>
+					<div className="v-grid" data-rise style={rd(80)}>
 						{FEATURES.map((f) => (
-							<div className="tb-feat" key={f.title}>
-								<div className="e">{f.e}</div>
-								<h3>{f.title}</h3>
-								<p>{f.body}</p>
+							<div className="v-feature" key={f.lead}>
+								<p>
+									<span className="v-feature-lead">{f.lead}</span> {f.body}
+								</p>
 							</div>
 						))}
 					</div>
-				</div>
-			</section>
+				</section>
 
-			{/* ── In the wild ──────────────────────────────────────── */}
-			<section className="tb-section">
-				<div className="tb-wrap">
-					<p className="tb-kicker">Machines in the wild</p>
-					<h2 className="tb-h2">Born inside Opsy.</h2>
-					<p className="tb-lead">
+				{/* ── In the wild ────────────────────────────────────── */}
+				<section className="v-section">
+					<h2 className="v-h2" data-rise>
+						Born inside Opsy.
+					</h2>
+					<p className="v-lead v-lead-wide" data-rise style={rd(80)}>
 						Five blocks turn messy, schema-shaped Terraform data into product UI
-						— each called as <code>.get({"{…}"})</code> and cached on identity.
+						— each a <code className="v-chip">.get({"{ … }"})</code> cached on
+						identity.
 					</p>
-					<div className="tb-wild">
+					<div className="v-wild" data-rise style={rd(140)}>
 						{WILD.map((w) => (
-							<div className="tb-wild-row" key={w.call}>
+							<div className="v-wild-row" key={w.call}>
 								<code>{w.call}</code>
 								<span>{w.body}</span>
 							</div>
 						))}
 					</div>
-				</div>
-			</section>
+				</section>
 
-			{/* ── Final CTA ────────────────────────────────────────── */}
-			<section className="tb-final">
-				<p className="tb-kicker">Put a machine on the line</p>
-				<h2 className="tb-h2" style={{ marginInline: "auto" }}>
-					Ship your first block in five minutes.
-				</h2>
-				<div className="tb-install">
-					<b>npm</b> install thinking-blocks ai zod
-				</div>
-				<div className="tb-cta-row">
-					<Link className="tb-btn tb-btn-primary" href="/docs/quickstart">
-						Quickstart →
-					</Link>
-					<a
-						className="tb-btn tb-btn-ghost"
-						href="https://github.com/opsyhq/thinking-blocks"
+				{/* ── Final CTA ──────────────────────────────────────── */}
+				<section className="v-section v-final">
+					<h2 className="v-final-title" data-rise>
+						Ship your first block
+						<br />
+						in five minutes.
+					</h2>
+					<div
+						className="v-hero-actions v-center-actions"
+						data-rise
+						style={rd(100)}
 					>
-						★ Star on GitHub
-					</a>
-				</div>
-			</section>
+						<CopyInstall cmd={INSTALL} />
+						<Link className="v-hero-link" href="/docs/quickstart">
+							Quickstart <span className="v-ext">↗</span>
+						</Link>
+					</div>
+				</section>
+			</div>
 
-			<footer className="tb-foot">
-				<span>Apache-2.0</span>
-				<a href="https://github.com/opsyhq/thinking-blocks">GitHub</a>
-				<Link href="/docs">Docs</Link>
-				<a href="https://www.npmjs.com/package/thinking-blocks">npm</a>
+			<footer className="v-foot">
+				<div className="v-foot-inner">
+					<span className="v-brand">
+						<span className="v-logo" aria-hidden="true" />
+						<span className="v-brand-name">thinking-blocks</span>
+					</span>
+					<div className="v-foot-links">
+						<Link href="/docs">Docs</Link>
+						<a href="https://github.com/opsyhq/thinking-blocks">GitHub</a>
+						<a href="https://www.npmjs.com/package/thinking-blocks">npm</a>
+						<span className="v-foot-license">Apache-2.0</span>
+					</div>
+				</div>
 			</footer>
-		</main>
+		</div>
+	)
+}
+
+function CodePanel({
+	title,
+	foot,
+	children,
+	delay,
+}: {
+	title: string
+	foot: string
+	children: ReactNode
+	delay?: number
+}) {
+	return (
+		<div className="v-code" data-rise style={delay ? rd(delay) : undefined}>
+			<div className="v-code-bar">
+				<span className="v-code-file">{title}</span>
+			</div>
+			<pre className="v-pre">{children}</pre>
+			<div className="v-code-foot">
+				<span className="v-dot v-dot-ok" /> {foot}
+			</div>
+		</div>
 	)
 }
