@@ -95,14 +95,12 @@ export default function HomePage() {
 			<div className="v-frame">
 				{/* ── Hero ───────────────────────────────────────────── */}
 				<section className="v-hero">
+					<p className="v-eyebrow">the software factory primitive for AI.</p>
 					<h1 className="v-title">
 						Don't fetch the answer.
 						<br />
 						Manufacture it.
 					</h1>
-					<p className="v-sub">
-						ThinkingBlocks is the software factory primitive for AI.
-					</p>
 					<div className="v-hero-actions">
 						<CopyInstall cmd={INSTALL} />
 						<Link className="v-hero-link" href="/docs/quickstart">
