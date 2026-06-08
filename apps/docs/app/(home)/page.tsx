@@ -95,12 +95,12 @@ export default function HomePage() {
 			<div className="v-frame">
 				{/* ── Hero ───────────────────────────────────────────── */}
 				<section className="v-hero">
-					<p className="v-eyebrow">the software factory primitive for AI.</p>
 					<h1 className="v-title">
-						Don't fetch the answer.
+						the software factory
 						<br />
-						Manufacture it.
+						primitive for AI.
 					</h1>
+					<p className="v-sub">Don't fetch the answer. Manufacture it.</p>
 					<div className="v-hero-actions">
 						<CopyInstall cmd={INSTALL} />
 						<Link className="v-hero-link" href="/docs/quickstart">
