@@ -1,6 +1,6 @@
 {
 	"name": "thinking-blocks",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"description": "Productize AI capabilities: function + AI agent + validation + memory + artifact + trace. Cached, versioned, validated, observable.",
 	"license": "Apache-2.0",
 	"type": "module",
