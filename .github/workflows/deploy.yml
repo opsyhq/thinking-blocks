@@ -39,13 +39,18 @@ jobs:
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          # wrangler 4 (assets-only deploy, no Worker entry-point) needs Node >= 22.
+          # On Node 20 wrangler-action rejects the project's wrangler and falls back
+          # to wrangler 3.90.0, which can't deploy an assets-only Worker.
+          node-version: 22
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm --filter @thinking-blocks/docs build
+      # Use the project's wrangler 4 (in devDependencies), not the action's bundled one.
       - uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          packageManager: pnpm
           workingDirectory: apps/docs
           command: deploy
