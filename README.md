@@ -11,10 +11,70 @@ through QC (your validators), reworked until it's in-spec, stamped with a serial
 model call. **The catalog is infinite.**
 
 ```ts
-// Order a finished part: call the machine, always get a validated result
+import { Output, ToolLoopAgent } from "ai"
+import { check, InMemoryThinkingBlockStore, judge, ThinkingBlock } from "thinking-blocks"
+import { z } from "zod"
+
+type FoodInput = { food: string }
+
+// The spec — the shape every finished part must match.
+const NutritionFacts = z.object({
+  serving: z.string(),
+  calories: z.number().nonnegative(),
+  protein: z.number().nonnegative(),
+  carbs: z.number().nonnegative(),
+  fat: z.number().nonnegative(),
+})
+type NutritionFacts = z.infer<typeof NutritionFacts>
+
+const Judgement = z.object({ ok: z.boolean(), reason: z.string() })
+type Judgement = z.infer<typeof Judgement>
+
+// The machine. Define it once; the catalog it serves is infinite.
+const nutrition = new ThinkingBlock<FoodInput, NutritionFacts>({
+  name: "nutrition",
+  store: new InMemoryThinkingBlockStore(),
+  agent: new ToolLoopAgent({
+    model: "openai/gpt-5",
+    output: Output.object({ schema: NutritionFacts }),
+  }),
+  // The serial number: same food -> same part, forever.
+  identity: ({ food }) => food.trim().toLowerCase(),
+  prepareCall: ({ input }) => ({
+    prompt: `Nutrition facts for one typical serving of "${input.food}". Give "serving" as a short human description and protein/carbs/fat in grams.`,
+  }),
+  attempts: { max: 3 },
+  validators: [
+    // QC, no model — a caliper: the stated calories must reconcile with the
+    // macros (4·protein + 4·carbs + 9·fat), or the part is reworked.
+    check<FoodInput, NutritionFacts>("macros-reconcile", {
+      validate: ({ output }) => {
+        const implied = 4 * output.protein + 4 * output.carbs + 9 * output.fat
+        return Math.abs(implied - output.calories) <= Math.max(40, 0.25 * output.calories)
+          ? { success: true }
+          : { success: false, feedback: `${output.calories} kcal doesn't match the macros (~${Math.round(implied)} kcal) — fix the numbers.` }
+      },
+    }),
+    // QC, with a model — an inspector: is this a realistic serving for the food?
+    judge<FoodInput, NutritionFacts, Judgement>("serving-is-realistic", {
+      agent: new ToolLoopAgent({
+        model: "openai/gpt-5",
+        output: Output.object({ schema: Judgement }),
+      }),
+      schema: Judgement,
+      prepareCall: ({ input, output }) => ({
+        prompt: `Is "${output.serving}" a realistic serving of "${input.food}", with plausible macros?`,
+      }),
+      validate: ({ judgement }) =>
+        judgement.ok ? { success: true } : { success: false, feedback: judgement.reason },
+    }),
+  ],
+})
+
+// Order a finished part: the machine makes it, runs it through QC, keeps it.
 const facts = await nutrition.get({ food: "dragon fruit" })
 // facts.output is { serving, calories, protein, carbs, fat }, validated and kept;
-// the same food -> the same part, instantly, forever
+// the same food -> the same part, instantly, forever, with no model call.
 ```
 
 Under the hood a Thinking Block is `function + AI agent + validation + memory +
