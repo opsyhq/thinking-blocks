@@ -14,10 +14,7 @@ trace`. It is not "send a prompt, get text back." The unit is a **machine on a
 line**:
 
 ```ts
-// a warehouse miss: prompt in, blob out, recomputed every time
-const text = await generateObject({ model, prompt: `nutrition facts for ${food}?` })
-
-// a factory order: call the machine, always get a finished part
+// a factory order: call the machine, always get a finished, validated part
 const facts = await nutrition.get({ food: "dragon fruit" })
 ```
 

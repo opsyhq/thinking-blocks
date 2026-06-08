@@ -12,3 +12,6 @@ out
 .env.*
 !.env.example
 coverage
+
+# never commit registry auth
+.npmrc

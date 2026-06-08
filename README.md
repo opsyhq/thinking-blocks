@@ -11,10 +11,7 @@ through QC (your validators), reworked until it's in-spec, stamped with a serial
 model call. **The catalog is infinite.**
 
 ```ts
-// A warehouse miss: a disposable prompt — blob out, recomputed every render, no spec, no QC, no record
-const text = await generateObject({ model, prompt: `nutrition facts for ${food}?` })
-
-// A factory order: call the machine, always get a finished part
+// Order a finished part: call the machine, always get a validated result
 const facts = await nutrition.get({ food: "dragon fruit" })
 // facts.output is { serving, calories, protein, carbs, fat }, validated and kept;
 // the same food -> the same part, instantly, forever

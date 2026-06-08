@@ -95,8 +95,11 @@ export default function HomePage() {
 			<div className="v-frame">
 				{/* ── Hero ───────────────────────────────────────────── */}
 				<section className="v-hero">
-					<h1 className="v-title">The software factory primitive</h1>
-					<p className="v-sub">Don't fetch the answer. Manufacture it.</p>
+					<h1 className="v-title">Don't fetch the answer. Manufacture it.</h1>
+					<p className="v-sub">
+						A versioned, validated, cached AI capability behind one call:{" "}
+						<code className="v-chip">block.get(input)</code>.
+					</p>
 					<div className="v-hero-actions">
 						<CopyInstall cmd={INSTALL} />
 						<Link className="v-hero-link" href="/docs/quickstart">

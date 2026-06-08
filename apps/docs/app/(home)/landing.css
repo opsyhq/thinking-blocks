@@ -320,6 +320,9 @@
 	display: grid;
 	grid-template-columns: 1fr 1fr;
 	gap: 1.25rem;
+	/* Each panel hugs its own content — the shorter use.ts must not stretch to
+	   block.ts's height and trail dead space. */
+	align-items: start;
 }
 
 /* ── Providers ───────────────────────────────────────────────────────── */
