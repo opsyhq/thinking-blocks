@@ -50,6 +50,14 @@ const first = await block.get({ text: "..." }) // generated
 const second = await block.get({ text: "..." }) // source: "cached"
 ```
 
+The store is pluggable. `InMemoryThinkingBlockStore` keeps parts for the life of
+the process; for durability swap in
+[`@thinking-blocks/store-local`](https://www.npmjs.com/package/@thinking-blocks/store-local)
+— a JSON file on disk, zero setup — or
+[`@thinking-blocks/store-postgres`](https://www.npmjs.com/package/@thinking-blocks/store-postgres)
+for Drizzle/Postgres. The block code is identical; only the `store` you pass in
+changes.
+
 A runnable example lives in
 [`examples/quickstart`](https://github.com/opsyhq/thinking-blocks/tree/main/examples/quickstart).
 

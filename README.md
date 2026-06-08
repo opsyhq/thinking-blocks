@@ -40,6 +40,7 @@ npm install thinking-blocks ai zod
 | [`thinking-blocks`](./packages/thinking-blocks) | Flagship package — the one you install. Re-exports the engine + in-memory store. |
 | [`@thinking-blocks/core`](./packages/core) | The engine: `ThinkingBlock`, `check`, `judge`, the runner, and `InMemoryThinkingBlockStore`. |
 | [`@thinking-blocks/store`](./packages/store) | The storage interface (`ThinkingBlockStore`) and its IO types. The seam every backend implements. |
+| [`@thinking-blocks/store-local`](./packages/store-local) | File-backed store — durable on disk, zero setup. A JSON snapshot the writer and the `tb dev` reader share. |
 | [`@thinking-blocks/store-postgres`](./packages/store-postgres) | Postgres-backed store (Drizzle) + audit read queries. |
 | [`@thinking-blocks/web`](./packages/web) | Observability dashboard — read-only, no auth, reads the store server-side. |
 | [`@thinking-blocks/cli`](./packages/cli) | `tb migrate` / `tb dev`. |
