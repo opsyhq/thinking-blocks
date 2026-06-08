@@ -440,6 +440,67 @@
 	color: var(--faint);
 }
 
+/* ── Motion ──────────────────────────────────────────────────────────── */
+/* A subtle fade-up, the way reasonblocks slides its blocks in on load. The
+   hero plays immediately on first paint; everything below reveals as it
+   scrolls into view (the <Reveal> island adds `reveal-on` + `is-in`). */
+@keyframes tb-rise {
+	from {
+		opacity: 0;
+		transform: translateY(12px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+.v-hero > * {
+	animation: tb-rise 0.62s cubic-bezier(0.22, 0.9, 0.3, 1) both;
+}
+.v-hero > .v-sub {
+	animation-delay: 0.1s;
+}
+.v-hero > .v-hero-actions {
+	animation-delay: 0.2s;
+}
+
+/* Hidden only once JS is live, so a no-JS render shows everything. */
+.reveal-on [data-rise] {
+	opacity: 0;
+}
+.reveal-on [data-rise].is-in {
+	animation: tb-rise 0.62s cubic-bezier(0.22, 0.9, 0.3, 1) both;
+	animation-delay: var(--rd, 0s);
+}
+
+/* The "ok" status dot breathes, like reasonblocks' active-dot. */
+.v-dot-ok {
+	animation: tb-dot-pulse 1.7s ease-in-out infinite;
+}
+@keyframes tb-dot-pulse {
+	0%,
+	100% {
+		opacity: 1;
+		transform: scale(1);
+	}
+	50% {
+		opacity: 0.45;
+		transform: scale(0.8);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.v-hero > *,
+	.reveal-on [data-rise],
+	.reveal-on [data-rise].is-in,
+	.v-dot-ok {
+		animation: none;
+		opacity: 1;
+		transform: none;
+	}
+}
+
 /* ── Responsive ──────────────────────────────────────────────────────── */
 @media (max-width: 860px) {
 	.v-split {

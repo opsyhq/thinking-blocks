@@ -1,9 +1,38 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
-/* The one interactive island on the otherwise-static landing: the install
-   pill's copy button. Everything else on the page is server-rendered. */
+/* The interactive islands on the otherwise-static landing: the install pill's
+   copy button and the scroll-reveal that fades sections up as they enter view.
+   Everything else on the page is server-rendered. */
+
+/* Reveals `[data-rise]` elements as they scroll into view. Marks the root
+   `reveal-on` only once mounted, so a no-JS render leaves everything visible. */
+export function Reveal() {
+	useEffect(() => {
+		const root = document.querySelector(".v")
+		if (!root) return
+		root.classList.add("reveal-on")
+		const targets = root.querySelectorAll("[data-rise]")
+		if (!("IntersectionObserver" in window)) {
+			for (const el of targets) el.classList.add("is-in")
+			return
+		}
+		const io = new IntersectionObserver(
+			(entries) => {
+				for (const e of entries) {
+					if (!e.isIntersecting) continue
+					e.target.classList.add("is-in")
+					io.unobserve(e.target)
+				}
+			},
+			{ rootMargin: "0px 0px -8% 0px", threshold: 0.1 },
+		)
+		for (const el of targets) io.observe(el)
+		return () => io.disconnect()
+	}, [])
+	return null
+}
 
 export function CopyInstall({ cmd }: { cmd: string }) {
 	const [copied, setCopied] = useState(false)

@@ -1,9 +1,13 @@
 import Link from "next/link"
-import type { ReactNode } from "react"
-import { CopyInstall } from "./landing-client"
+import type { CSSProperties, ReactNode } from "react"
+import { CopyInstall, Reveal } from "./landing-client"
 import "./landing.css"
 
 const INSTALL = "npm install thinking-blocks"
+
+/* Per-item reveal stagger: feeds the `--rd` animation-delay the CSS reads. */
+const rd = (ms: number): CSSProperties =>
+	({ "--rd": `${ms}ms` }) as CSSProperties
 
 const FEATURES = [
 	{
@@ -68,6 +72,7 @@ const PROVIDERS = [
 export default function HomePage() {
 	return (
 		<div className="v">
+			<Reveal />
 			<header className="v-nav">
 				<div className="v-nav-inner">
 					<Link className="v-brand" href="/">
@@ -96,8 +101,7 @@ export default function HomePage() {
 						Manufacture it.
 					</h1>
 					<p className="v-sub">
-						<code className="v-chip">.get(input)</code> is the software factory
-						primitive for AI — durable, validated, cached on its identity.
+						ThinkingBlocks is the software factory primitive for AI.
 					</p>
 					<div className="v-hero-actions">
 						<CopyInstall cmd={INSTALL} />
@@ -110,12 +114,12 @@ export default function HomePage() {
 				{/* ── Comparison ─────────────────────────────────────── */}
 				<section className="v-section v-split">
 					<div className="v-split-head">
-						<h2 className="v-h2">
+						<h2 className="v-h2" data-rise>
 							A capability,
 							<br />
 							not a prompt.
 						</h2>
-						<p className="v-lead">
+						<p className="v-lead" data-rise style={rd(80)}>
 							You never load a row and hope it's there. Call the block — if the
 							part was never made, the line makes it now, validates it, and
 							keeps it on its serial.
@@ -124,6 +128,7 @@ export default function HomePage() {
 					<CodePanel
 						title="quickstart.ts"
 						foot="second .get() ships the same part — no model call"
+						delay={160}
 					>
 						<code>
 							<span className="t-k">const</span> nutritionBlock ={" "}
@@ -147,8 +152,10 @@ export default function HomePage() {
 
 				{/* ── Define a block once ────────────────────────────── */}
 				<section className="v-section">
-					<h2 className="v-h2">Define a block once.</h2>
-					<p className="v-lead v-lead-wide">
+					<h2 className="v-h2" data-rise>
+						Define a block once.
+					</h2>
+					<p className="v-lead v-lead-wide" data-rise style={rd(80)}>
 						A schema for the part, an agent to build it, and a gate to pass it.
 						That's the whole declaration.
 					</p>
@@ -156,6 +163,7 @@ export default function HomePage() {
 						<CodePanel
 							title="block.ts"
 							foot="a chain of checks gates every part"
+							delay={140}
 						>
 							<code>
 								<span className="t-k">const</span> nutritionBlock ={" "}
@@ -178,7 +186,7 @@ export default function HomePage() {
 								{"}"})
 							</code>
 						</CodePanel>
-						<CodePanel title="use.ts" foot="cached on identity">
+						<CodePanel title="use.ts" foot="cached on identity" delay={220}>
 							<code>
 								<span className="t-k">const</span> part ={" "}
 								<span className="t-k">await</span> nutritionBlock.
@@ -195,15 +203,17 @@ export default function HomePage() {
 
 				{/* ── Any model ──────────────────────────────────────── */}
 				<section className="v-section v-center">
-					<h2 className="v-h2 v-h2-center">Bring any model.</h2>
-					<p className="v-lead v-lead-center">
+					<h2 className="v-h2 v-h2-center" data-rise>
+						Bring any model.
+					</h2>
+					<p className="v-lead v-lead-center" data-rise style={rd(80)}>
 						Blocks run on the Vercel AI SDK, so every provider it supports works
 						unchanged. <code className="v-chip">ai</code> and{" "}
 						<code className="v-chip">zod</code> are peer deps — never bundled.
 					</p>
 					<div className="v-providers">
-						{PROVIDERS.map((p) => (
-							<span className="v-provider" key={p}>
+						{PROVIDERS.map((p, i) => (
+							<span className="v-provider" key={p} data-rise style={rd(i * 45)}>
 								{p}
 							</span>
 						))}
@@ -212,8 +222,10 @@ export default function HomePage() {
 
 				{/* ── Features ───────────────────────────────────────── */}
 				<section className="v-section">
-					<h2 className="v-h2">Everything a block gives you.</h2>
-					<div className="v-grid">
+					<h2 className="v-h2" data-rise>
+						Everything a block gives you.
+					</h2>
+					<div className="v-grid" data-rise style={rd(80)}>
 						{FEATURES.map((f) => (
 							<div className="v-feature" key={f.lead}>
 								<p>
@@ -226,13 +238,15 @@ export default function HomePage() {
 
 				{/* ── In the wild ────────────────────────────────────── */}
 				<section className="v-section">
-					<h2 className="v-h2">Born inside Opsy.</h2>
-					<p className="v-lead v-lead-wide">
+					<h2 className="v-h2" data-rise>
+						Born inside Opsy.
+					</h2>
+					<p className="v-lead v-lead-wide" data-rise style={rd(80)}>
 						Five blocks turn messy, schema-shaped Terraform data into product UI
 						— each a <code className="v-chip">.get({"{ … }"})</code> cached on
 						identity.
 					</p>
-					<div className="v-wild">
+					<div className="v-wild" data-rise style={rd(140)}>
 						{WILD.map((w) => (
 							<div className="v-wild-row" key={w.call}>
 								<code>{w.call}</code>
@@ -244,12 +258,16 @@ export default function HomePage() {
 
 				{/* ── Final CTA ──────────────────────────────────────── */}
 				<section className="v-section v-final">
-					<h2 className="v-final-title">
+					<h2 className="v-final-title" data-rise>
 						Ship your first block
 						<br />
 						in five minutes.
 					</h2>
-					<div className="v-hero-actions v-center-actions">
+					<div
+						className="v-hero-actions v-center-actions"
+						data-rise
+						style={rd(100)}
+					>
 						<CopyInstall cmd={INSTALL} />
 						<Link className="v-hero-link" href="/docs/quickstart">
 							Quickstart <span className="v-ext">↗</span>
@@ -280,13 +298,15 @@ function CodePanel({
 	title,
 	foot,
 	children,
+	delay,
 }: {
 	title: string
 	foot: string
 	children: ReactNode
+	delay?: number
 }) {
 	return (
-		<div className="v-code">
+		<div className="v-code" data-rise style={delay ? rd(delay) : undefined}>
 			<div className="v-code-bar">
 				<span className="v-code-file">{title}</span>
 			</div>
