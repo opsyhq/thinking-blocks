@@ -161,8 +161,8 @@
 }
 .v-title {
 	margin: 0;
-	/* Sized so "The software factory primitive" holds one line down to ~470px
-	   (it only wraps on the narrowest phones, where one line can't fit). */
+	/* Sized to fill the hero; `text-wrap: balance` wraps the headline to even
+	   lines (the current headline rides two balanced lines on most widths). */
 	font-size: clamp(2.4rem, 6.8vw, 4.7rem);
 	font-weight: 800;
 	line-height: 1.02;

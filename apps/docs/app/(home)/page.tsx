@@ -95,10 +95,14 @@ export default function HomePage() {
 			<div className="v-frame">
 				{/* ── Hero ───────────────────────────────────────────── */}
 				<section className="v-hero">
-					<h1 className="v-title">Don't fetch the answer. Manufacture it.</h1>
+					<h1 className="v-title">
+						Closed loops that manufacture the answer.
+					</h1>
 					<p className="v-sub">
-						A versioned, validated, cached AI capability behind one call:{" "}
-						<code className="v-chip">block.get(input)</code>.
+						Invoke a thinking block with{" "}
+						<code className="v-chip">block.get(input)</code> and it generates,
+						validates, and caches the result. Made the first time, instant
+						every time after.
 					</p>
 					<div className="v-hero-actions">
 						<CopyInstall cmd={INSTALL} />
