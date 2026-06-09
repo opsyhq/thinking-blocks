@@ -1,8 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="-2 -2 28 28" shape-rendering="crispEdges">
-  <style>
-    rect { fill: #0a0a0a; }
-    @media (prefers-color-scheme: dark) { rect { fill: #f5f5f5; } }
-  </style>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-2 -2 28 28" fill="#000" shape-rendering="crispEdges">
   <rect x="0" y="0" width="4" height="4"/>
   <rect x="5" y="0" width="4" height="4"/>
   <rect x="15" y="0" width="4" height="4"/>
